@@ -51,6 +51,10 @@ node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after e
   steps that each fit in one prompt is not.
 - **Git.** One issue, one branch `<type>/<issue>-<short-name>`. Conventional Commits. PRs are
   squash-merged, and the PR title is the commit. Never push to `main`. Never merge a PR yourself.
+  A parent issue has an integration branch `<type>/<parent>-<short-name>`: its sub-issues are cut
+  from it and their PRs target it (`Part of #<parent>`, `Refs #<sub-issue>`); one final PR into
+  `main` closes the parent and every sub-issue. An `adr` sub-issue goes straight to `main`. See
+  `CONTRIBUTING.md`.
 - **Rust.** Edition 2024. No `unsafe`. Clippy warnings fail CI. No `unwrap` outside tests; `expect`
   only at startup in the shell.
 - **Tests.** Core is pure and covered by unit tests; the solver also by property tests. Store tests
