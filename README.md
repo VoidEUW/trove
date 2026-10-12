@@ -56,9 +56,9 @@ Click **Use this template** on GitHub, then replace the placeholders:
 
 | What | Where |
 |---|---|
-| Product name `App` | `apps/desktop/src-tauri/tauri.conf.json` (`productName`, window `title`), `apps/desktop/src/app.html`, `app.title` in `apps/desktop/src/lib/i18n/en.json` |
-| Bundle identifier `com.example.app` | `apps/desktop/src-tauri/tauri.conf.json` |
-| Crate and package names `app`, `app-core` | `apps/desktop/src-tauri/Cargo.toml`, `crates/core/Cargo.toml`, `Cargo.toml`, `apps/desktop/package.json` |
+| Product name `Trove` | `apps/desktop/src-tauri/tauri.conf.json` (`productName`, window `title`), `apps/desktop/src/app.html`, `app.title` in `apps/desktop/src/lib/i18n/en.json` |
+| Bundle identifier `dev.voideuw.trove` | `apps/desktop/src-tauri/tauri.conf.json` |
+| Crate and package names `trove-core`, `trove-store`, `trove-desktop` | `crates/trove-core/Cargo.toml`, `crates/trove-store/Cargo.toml`, `apps/desktop/src-tauri/Cargo.toml`, `Cargo.toml`, `apps/desktop/package.json` |
 | Icons | `npm run tauri icon path/to/icon.png` in `apps/desktop` |
 | Copyright holder | `NOTICE.md` |
 | Allowed dependency licenses | `deny.toml` |
@@ -73,8 +73,9 @@ Then rewrite this README for your app.
 apps/desktop/            Svelte 5 frontend (SvelteKit, static SPA)
 ├── src/lib/i18n/        Translation files and t()
 ├── src/lib/theme/       Tokens generated from the active theme
-└── src-tauri/           Tauri shell crate `app`
-crates/core/             Application logic, no Tauri dependency
+└── src-tauri/           Tauri shell crate `trove-desktop`
+crates/trove-core/       Domain logic, no IO and no Tauri dependency
+crates/trove-store/      SQLite storage, implements the core's ports
 docs/
 ├── adr/                 Architecture decision records
 ├── briefs/              Instructions for building a theme generator or MVP prototype elsewhere

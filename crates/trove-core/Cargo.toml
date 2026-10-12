@@ -1,6 +1,6 @@
 [package]
-name = "app-core"
-description = "Application logic. Knows nothing about Tauri or the UI."
+name = "trove-core"
+description = "Trove's domain logic: types, validation, layout solver and ports. Does no IO and knows nothing about Tauri."
 version.workspace = true
 edition.workspace = true
 license.workspace = true

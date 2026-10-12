@@ -1,9 +1,8 @@
 # Architecture
 
 How Trove's parts fit together **now**. Why each part looks the way it does is in the ADRs a
-section cites; what is planned is in the issues. No application code exists yet, so this file
-describes the structure every issue builds towards. The template scaffold still has `crates/core`
-and the shell crate `app`; Foundation issues rename them to the parts below.
+section cites; what is planned is in the issues. Little application code exists yet, so this file
+describes the structure every issue builds towards.
 
 Rules for this file:
 
