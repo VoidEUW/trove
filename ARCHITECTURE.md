@@ -114,6 +114,12 @@ account and no network dependency. Dependencies point downwards only.
 - Every mutation writes an operation (id, device, HLC, `op_version`, entity, field patch) to `ops`
   in the same transaction. Only the store's service layer writes to SQLite. History, undo and the
   move log come from the same operations.
+- Encoding: the patch is a JSON object of field to value, with `null` meaning clear; the first
+  operation for an entity id creates it. The HLC is a packed `i64` (47 bits of Unix milliseconds,
+  16 bits of counter), an `INTEGER` in SQLite and a decimal string in JSON. Order is
+  `(hlc, device_id)`; a remote HLC more than 1 hour ahead of the local clock is refused. The first
+  migration creates `ops` and `meta` (device id) only; the store applies operations through a handler
+  per entity.
 - Snapshots at an HLC watermark bound replay time and record the `op_version` they were made with.
 - Sync (not built yet): each device appends its operations to
   `<sync folder>/ops/<device_id>/<seq>.jsonl`; others import them idempotently; per field the highest
@@ -122,7 +128,8 @@ account and no network dependency. Dependencies point downwards only.
   hash.
 
 *Source:* [ADR 9](docs/adr/0009-operation-log-and-sync.md),
-[ADR 10](docs/adr/0010-operations-as-source-of-truth.md)
+[ADR 10](docs/adr/0010-operations-as-source-of-truth.md),
+[ADR 16](docs/adr/0016-operation-encoding-and-clock-format.md)
 
 ## 7. User interface
 
@@ -179,6 +186,7 @@ account and no network dependency. Dependencies point downwards only.
 | [13](docs/adr/0013-threlte-floor-plan-scene.md) | One Threlte scene for 2D and 3D | accepted |
 | [14](docs/adr/0014-ui-architecture-and-tokens.md) | SvelteKit SPA styled only by Heaven tokens | accepted |
 | [15](docs/adr/0015-ui-languages.md) | English and German from the first component | accepted |
+| [16](docs/adr/0016-operation-encoding-and-clock-format.md) | JSON patch operations ordered by a packed 64-bit HLC | accepted |
 
 ## 10. Open questions
 
