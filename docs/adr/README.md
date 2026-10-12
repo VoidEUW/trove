@@ -42,3 +42,4 @@ and what follows from it.
 | [0013](0013-threlte-floor-plan-scene.md) | One Threlte scene draws the floor plan in both 2D and 3D | Accepted |
 | [0014](0014-ui-architecture-and-tokens.md) | The UI is a SvelteKit SPA whose look comes only from the Heaven tokens | Accepted |
 | [0015](0015-ui-languages.md) | The interface is in English and German from the first component | Accepted |
+| [0016](0016-operation-encoding-and-clock-format.md) | Operations are JSON patches ordered by a packed 64-bit hybrid logical clock | Accepted |
