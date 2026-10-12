@@ -48,19 +48,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "app-core",
- "tauri",
- "tauri-build",
-]
-
-[[package]]
-name = "app-core"
-version = "0.1.0"
-
-[[package]]
 name = "atk"
 version = "0.18.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3555,6 +3542,27 @@ dependencies = [
  "serde",
  "thiserror 2.0.21",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "trove-core"
+version = "0.1.0"
+
+[[package]]
+name = "trove-desktop"
+version = "0.1.0"
+dependencies = [
+ "tauri",
+ "tauri-build",
+ "trove-core",
+ "trove-store",
+]
+
+[[package]]
+name = "trove-store"
+version = "0.1.0"
+dependencies = [
+ "trove-core",
 ]
 
 [[package]]

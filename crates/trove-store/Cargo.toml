@@ -1,0 +1,13 @@
+[package]
+name = "trove-store"
+description = "Trove's storage: SQLite, migrations, operation log, files and search. Implements the ports of trove-core."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+trove-core.workspace = true
+
+[lints]
+workspace = true

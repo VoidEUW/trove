@@ -1,6 +1,6 @@
 [package]
-name = "app"
-description = "Desktop shell: wires app-core into Tauri."
+name = "trove-desktop"
+description = "Desktop shell: wires trove-core and trove-store into Tauri."
 version.workspace = true
 edition.workspace = true
 license.workspace = true
@@ -8,14 +8,15 @@ publish.workspace = true
 
 [lib]
 # The `_lib` suffix keeps the lib name distinct from the bin name (https://github.com/rust-lang/cargo/issues/8519).
-name = "app_lib"
+name = "trove_desktop_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-app-core.workspace = true
+trove-core.workspace = true
+trove-store.workspace = true
 tauri = { version = "2", features = [] }
 
 [lints]
