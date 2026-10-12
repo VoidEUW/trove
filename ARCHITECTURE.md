@@ -47,7 +47,7 @@ account and no network dependency. Dependencies point downwards only.
 | UI | `apps/desktop/` | Screens, map scene, layout editor, components, translations | shell's commands | Read files or the database |
 | Decisions | `docs/adr/` | One file per decision | — | Hold plans |
 | Component system | `docs/themes/system.md` | Token names, looks, motion presets, component catalogue | — | Differ between themes |
-| Theme | `docs/themes/heaven/` | `theme.md` (spec), `theme.png`, `icons.svg` | system | Be edited in `tokens.css`; that file is generated from `theme.md` |
+| Theme | `docs/themes/heaven.md`, `heaven.png` | Spec (looks, tokens, type, icons, motion) and its rendered picture | system | Be edited in `tokens.css`; that file is generated from the spec |
 
 *Source:* [ADR 1](docs/adr/0001-record-decisions-as-adr-files.md),
 [ADR 3](docs/adr/0003-crate-map.md), [ADR 14](docs/adr/0014-ui-architecture-and-tokens.md)
@@ -131,10 +131,10 @@ account and no network dependency. Dependencies point downwards only.
   `/layout/[home]`, `/settings`. State in `.svelte.ts` modules per domain with runes.
 - Components follow the catalogue in `docs/themes/system.md` and live in
   `apps/desktop/src/lib/components/`, named after their id.
-- Look: the Heaven theme as specified in `docs/themes/heaven/theme.md`; `/apply-theme` generates
+- Look: the Heaven theme as specified in `docs/themes/heaven.md`; `/apply-theme` generates
   `apps/desktop/src/lib/theme/tokens.css` from it. No literal colours, fonts, radii or durations in
-  `apps/desktop/src`. Brass = selection, laurel = found and live, pomegranate = people, danger =
-  needs attention.
+  `apps/desktop/src`. `--accent` = selection, `--focus` = found and live, `--warning` = fragile,
+  `--danger` = needs attention.
 - Map: one Threlte scene drawn from solver output; orthographic camera for 2D and the layout
   editor, perspective camera for 3D; raycast picking; scene colours read from the tokens.
 - Languages: English (source) and German; every string is a key in
@@ -186,7 +186,7 @@ account and no network dependency. Dependencies point downwards only.
 | Question | Blocks | Settled by |
 |---|---|---|
 | Do ADRs 1–15 hold against the MVP prototype? | Every milestone after Foundation | Prototype review; ADRs that fail are removed or superseded |
-| What does the Heaven theme look like (`docs/themes/heaven/theme.md`)? | Every UI component | The MVP prototype export |
+| Do people and ownership get their own colour? | Owners and the Shared mark | `adr` issue from the prototype import |
 | How does a second device get the secrets' data key (ADR 12)? | Sync of licence keys | Spec issue, before sync |
 | Walls fixed low or cut away by camera angle; HTML labels or SDF text (ADR 13)? | Map scene | Spike in the 3D map phase |
 | Lifecycle states (lent, sold, given away) and purchase data | Domain model extension | New ADR when the feature is planned |

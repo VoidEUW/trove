@@ -21,7 +21,8 @@ features change all the time, and copies of them in files drift from the issues.
 - An accepted ADR is not rewritten. Only its status line changes; a changed decision is a new ADR
   that supersedes the old one.
 - `ARCHITECTURE.md` describes how the parts fit *now* and cites ADRs for why.
-- The visual system lives in `docs/themes/<name>/` (`theme.md`, `theme.png`, `icons.svg`).
+- The visual system lives in `docs/themes/`: the component system `system.md`, and per theme
+  `<name>.md` (spec) and `<name>.png` (picture rendered from it).
 - Plans, tasks, bugs, features, progress and implementation steps live only in issues.
 
 This rules out plan documents, TODO files, roadmaps, hand-written changelogs and design notes in the
@@ -33,4 +34,3 @@ repository.
 - An agent reads ADRs before code; `/start-issue` must load the ADRs an issue cites.
 - Issues are still not in git: losing the repository loses the plan. A periodic export of issues
   (`gh issue list --json …`) is worth a chore issue.
-- Follow-ups: move the theme files into `docs/themes/<name>/` and adapt the theme tooling to it.

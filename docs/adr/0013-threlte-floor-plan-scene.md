@@ -19,8 +19,8 @@ one for 3D, would drift apart.
   possible), loose items as pins, staircases as stepped boxes linking floors. All floors can be
   shown stacked with a gap.
 - Picking by raycast through Threlte's interactivity plugin.
-- Pin and box states take their colours from the tokens: selected = brass, found = laurel with a
-  pulse, needs attention = danger, not a match = dimmed.
+- Pin and box states take their colours from the tokens: selected = `--accent`, found = `--focus` with
+  a pulse, needs attention = `--danger`, not a match = dimmed.
 - Budget: 60 fps with 500 places on an M1 MacBook Air.
 
 This rules out a separate SVG or canvas 2D renderer and CSS-tilted fake 3D.
