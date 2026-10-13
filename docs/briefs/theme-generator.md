@@ -7,8 +7,8 @@ app and export it as one Markdown file in an exact format.
 
 - `docs/themes/system.md`: the component system. It defines every token, look, motion preset,
   slot and component the theme must cover. Treat it as fixed.
-- `docs/themes/default.md`: the reference theme. Its format is the export format, and its values are the starting point.
-- `docs/themes/default.png`: what the result should look like.
+- `docs/themes/heaven.md`: the reference theme. Its format is the export format, and its values are the starting point.
+- `docs/themes/heaven.png`: what the result should look like.
 - `tools/theme-preview/preview.html`: the preview page used in the repository. Reuse it.
 
 ## What to build
@@ -57,7 +57,7 @@ Write rgba values out in full in the export (no `color-mix`), so the CSS works e
 ## Export
 
 A **Download `<name>.md`** button, plus **Copy**. The file must follow the theme file format in
-`docs/themes/README.md` exactly: the same headings, order and table columns as `default.md`, every
+`docs/themes/README.md` exactly: the same headings, order and table columns as `heaven.md`, every
 token, component and slot present, and the motion preset as a comment after each `--motion-*` line.
 The name is a lower-case kebab-case slug. Don't export a picture. The repository renders it from the
 `.md`, so the two always match.

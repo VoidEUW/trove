@@ -63,7 +63,7 @@ Click **Use this template** on GitHub, then replace the placeholders:
 | Copyright holder | `NOTICE.md` |
 | Allowed dependency licenses | `deny.toml` |
 | Repository URL in the badges | This README |
-| Theme | Copy `docs/themes/default.md` (or use the [theme generator brief](docs/briefs/theme-generator.md)), render it, run `/apply-theme <name>` |
+| Theme | Copy `docs/themes/heaven.md` (or use the [theme generator brief](docs/briefs/theme-generator.md)), render it, run `/apply-theme <name>` |
 
 Then rewrite this README for your app.
 
