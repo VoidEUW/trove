@@ -120,6 +120,11 @@ account and no network dependency. Dependencies point downwards only.
   `(hlc, device_id)`; a remote HLC more than 1 hour ahead of the local clock is refused. The first
   migration creates `ops` and `meta` (device id) only; the store applies operations through a handler
   per entity.
+- Projections: each entity type has a `Projection` handler in `trove-store` that applies its operations
+  inside the transaction that appends them, and empties its tables for a replay. `kind` and `item` are
+  the first two. The eleven seed kinds have fixed ids and are inserted by a migration; a replay puts
+  them back. Validation (a name is required, a quantity is a whole number from 1) lives in
+  `trove-core` and runs before anything is written.
 - Snapshots at an HLC watermark bound replay time and record the `op_version` they were made with.
 - Sync (not built yet): each device appends its operations to
   `<sync folder>/ops/<device_id>/<seq>.jsonl`; others import them idempotently; per field the highest

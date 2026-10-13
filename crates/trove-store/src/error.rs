@@ -3,9 +3,9 @@
 use std::io;
 use std::path::PathBuf;
 
-use trove_core::ClockError;
 use trove_core::Id;
 use trove_core::id::IdError;
+use trove_core::{ClockError, ItemError};
 
 /// Why the store could not open, migrate or use the database.
 #[derive(Debug, thiserror::Error)]
@@ -40,6 +40,12 @@ pub enum StoreError {
         version: u32,
         supported: u32,
     },
+    /// The item cannot be saved as it is.
+    #[error(transparent)]
+    Item(#[from] ItemError),
+    /// No kind has this id.
+    #[error("there is no kind {0}")]
+    UnknownKind(Id),
     /// A projection refused an operation; the transaction is rolled back.
     #[error("a projection refused the operation: {0}")]
     Projection(String),

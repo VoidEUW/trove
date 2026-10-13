@@ -11,6 +11,7 @@ use rusqlite_migration::{Migrations, SchemaVersion};
 use trove_core::{Clock, Id, Operation, Patch};
 
 use crate::error::StoreError;
+use crate::items::{ItemProjection, KindProjection};
 use crate::projection::Projection;
 use crate::{backup, migrations, oplog};
 
@@ -39,7 +40,11 @@ impl Store {
     /// older Trove is backed up and migrated; one left by a newer Trove is refused untouched.
     /// `now_ms` (Unix milliseconds) names the backup and stamps a new device id.
     pub fn open(root: &Path, now_ms: u64) -> Result<Self, StoreError> {
-        Self::open_with(root, now_ms, &migrations::all())
+        let mut store = Self::open_with(root, now_ms, &migrations::all())?;
+        // Parents first: replay empties the tables in the opposite order.
+        store.register(KindProjection)?;
+        store.register(ItemProjection)?;
+        Ok(store)
     }
 
     /// [`Store::open`] with an explicit migration list, so upgrades can be tested.

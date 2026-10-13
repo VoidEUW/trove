@@ -21,6 +21,18 @@ impl Id {
         Self(Uuid::new_v7(timestamp))
     }
 
+    /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the
+    /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every
+    /// id made by [`Id::new`].
+    pub const fn seed(n: u16) -> Self {
+        const SEED_TIMESTAMP: u128 = 0;
+        const VERSION_7: u128 = 0x7 << 76;
+        const VARIANT: u128 = 0b10 << 62;
+        Self(Uuid::from_u128(
+            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,
+        ))
+    }
+
     /// The milliseconds since the Unix epoch encoded in the id.
     pub fn timestamp_ms(self) -> u64 {
         self.0
@@ -69,6 +81,19 @@ mod tests {
         let id = Id::new(1_760_000_000_123);
         assert_eq!(id.0.get_version_num(), 7);
         assert_eq!(id.timestamp_ms(), 1_760_000_000_123);
+    }
+
+    #[test]
+    fn seed_ids_are_fixed_version_7_ids_that_sort_first() {
+        assert_eq!(Id::seed(1), Id::seed(1));
+        assert_ne!(Id::seed(1), Id::seed(2));
+        assert_eq!(Id::seed(7).0.get_version_num(), 7);
+        assert_eq!(Id::seed(7).to_string().parse::<Id>().unwrap(), Id::seed(7));
+        assert!(Id::seed(u16::MAX) < Id::new(1));
+        assert_eq!(
+            Id::seed(1).to_string(),
+            "00000000-0000-7000-8000-000000000001"
+        );
     }
 
     #[test]
