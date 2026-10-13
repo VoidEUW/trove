@@ -16,8 +16,9 @@ disable-model-invocation: true
      '.[].number'` is not empty), so this is its integration branch.
      - Every sub-issue that is still open needs a merged pull request into this branch
        (`gh pr list --state merged --base <branch> --json number,headRefName`, a head branch starting
-       `<type>/<sub-issue>-`). If one has none, stop and list them. Closed sub-issues, such as ADRs
-       that went to `main`, are skipped.
+       `<type>/<sub-issue>-`). If one has none, stop and list them. If one has a merged pull request
+       but is still open, close it as in step 8. Closed sub-issues, such as ADRs that went to `main`,
+       are skipped.
      - If `git rev-list --count HEAD..origin/<base>` is not 0, ask, then merge `origin/<base>` into the
        branch (a merge, not a rebase: others have branches cut from it) and push before going on.
    - **Sub-issue**: the issue has no sub-issues but has a parent. Its pull request goes to that parent's
@@ -45,12 +46,16 @@ disable-model-invocation: true
    gh pr create --base <base> --title "<title>" --body-file <filled copy of .github/pull_request_template.md>
    ```
    The first line of the body depends on the kind. GitHub closes issues only when a pull request
-   reaches `main`, and needs one keyword per issue. "Open descendants" are the issue's sub-issues, their
-   sub-issues and so on, that are still open.
+   reaches `main`, and needs one keyword per issue.
    - **Plain**: `Closes #<issue>`.
    - **Sub-issue**, or a **final** pull request whose base is not `main`: `Part of #<parent>. Refs
-     #<issue>` and the open descendants, which the final pull request into main closes.
-   - **Final** into `main`: `Closes #<issue>` followed by one `Closes #<n>` line for each open descendant.
+     #<issue>`. The issue is closed by hand after the merge (step 8).
+   - **Final** into `main`: `Closes #<issue>`, then one `Closes #<n>` line for each descendant that
+     is still open (normally none: they were closed when their pull requests merged).
 
    Then one or two sentences of what and why, and the checklist items that hold ticked.
-7. Give the user the PR URL. Do not merge. A final pull request is merged with its branch deleted.
+7. Give the user the PR URL. Do not merge unless the user allows it. A final pull request is merged
+   with its branch deleted.
+8. **Close the issue** once a pull request whose base is not `main` is merged, because GitHub will not:
+   `gh issue close <issue> --reason completed --comment "Merged into <base> in #<pr>."`. A pull request
+   into `main` closes its issue through `Closes`.
