@@ -60,7 +60,14 @@
 
 <div class="select">
 	<span class="label" {id}>{label}</span>
-	<div class="anchor">
+	<!-- The menu closes when focus leaves the select, for instance when the dialog around it closes. -->
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<div
+		class="anchor"
+		onfocusout={(event) => {
+			if (!event.currentTarget.contains(event.relatedTarget as Node | null)) open = false;
+		}}
+	>
 		<button
 			bind:this={trigger}
 			type="button"

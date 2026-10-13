@@ -205,6 +205,8 @@
 		z-index: 10;
 		min-width: 100%;
 		width: max-content;
+		max-height: calc(var(--space) * 70);
+		overflow-y: auto;
 		padding: calc(var(--space) * 1.5);
 		border: var(--border-width) solid var(--look-border);
 		border-radius: var(--look-radius);
