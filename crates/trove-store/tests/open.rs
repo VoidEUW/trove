@@ -6,12 +6,10 @@ use std::path::Path;
 
 use rusqlite::Connection;
 use rusqlite_migration::{M, Migrations};
-use tempfile::TempDir;
 use trove_store::{BACKUPS_DIR, DATABASE_FILE, Store, StoreError};
 
-fn data_folder() -> TempDir {
-    tempfile::tempdir_in(env!("CARGO_TARGET_TMPDIR")).unwrap()
-}
+mod common;
+use common::data_folder;
 
 fn user_version(conn: &Connection) -> i64 {
     conn.pragma_query_value(None, "user_version", |row| row.get(0))
