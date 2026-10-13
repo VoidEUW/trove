@@ -11,6 +11,9 @@ export const errorKeys = {
 	storage: 'error.storage',
 	database_too_new: 'error.database_too_new',
 	invalid: 'error.invalid',
+	name_required: 'item-form.name.required',
+	quantity_invalid: 'item-form.quantity.invalid',
+	unknown_kind: 'error.unknown_kind',
 	internal: 'error.internal'
 } as const satisfies Record<ErrorCode, MessageKey>;
 
