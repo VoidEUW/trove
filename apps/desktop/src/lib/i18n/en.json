@@ -1,4 +1,9 @@
 {
 	"app.title": "Trove",
-	"home.tagline": "Know where everything in your home is."
+	"error.database_too_new": "This data was saved by a newer version of Trove. Update Trove to open it.",
+	"error.internal": "Something went wrong inside Trove.",
+	"error.invalid": "That is not valid.",
+	"error.storage": "Trove could not read or write its data.",
+	"home.tagline": "Know where everything in your home is.",
+	"home.version": "Version {version}"
 }

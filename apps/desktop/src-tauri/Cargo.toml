@@ -19,9 +19,13 @@ trove-core.workspace = true
 trove-store.workspace = true
 tauri = { version = "2", features = [] }
 thiserror = "2.0.21"
+ts-rs = "12.0.1"
+serde = { version = "1.0.229", features = ["derive"] }
 
 [lints]
 workspace = true
 
 [dev-dependencies]
+serde_json = "1.0.154"
+tauri = { version = "2", features = ["test"] }
 tempfile = "3.27.0"
