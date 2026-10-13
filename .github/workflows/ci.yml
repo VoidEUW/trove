@@ -54,6 +54,26 @@ jobs:
       - name: Test
         run: cargo test --workspace
 
+      # `cargo test` writes the TypeScript bindings (ADR 4); a difference means they were not regenerated.
+      - name: Bindings are up to date
+        run: |
+          changed=$(git status --porcelain -- apps/desktop/src/lib/bindings)
+          if [ -n "$changed" ]; then
+            echo "Stale bindings: run cargo test and commit apps/desktop/src/lib/bindings"
+            echo "$changed"
+            exit 1
+          fi
+
+      # Components go through apps/desktop/src/lib/api/ and never talk to Tauri themselves (ADR 4).
+      - name: Only the API layer imports Tauri
+        run: |
+          offenders=$(grep -rlE "@tauri-apps/api" apps/desktop/src --include='*.svelte' --include='*.ts' | grep -v '^apps/desktop/src/lib/api/' || true)
+          if [ -n "$offenders" ]; then
+            echo "Only apps/desktop/src/lib/api/ may import @tauri-apps/api:"
+            echo "$offenders"
+            exit 1
+          fi
+
   deny:
     name: deny
     runs-on: ubuntu-latest

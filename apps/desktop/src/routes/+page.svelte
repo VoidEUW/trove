@@ -1,10 +1,25 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { errorMessage, getAppInfo } from '$lib/api';
 	import { t } from '$lib/i18n/index.svelte';
+
+	let status = $state('');
+
+	onMount(async () => {
+		try {
+			status = t('home.version', { version: (await getAppInfo()).version });
+		} catch (error) {
+			status = errorMessage(error);
+		}
+	});
 </script>
 
 <main>
 	<h1>{t('app.title')}</h1>
 	<p class="tagline">{t('home.tagline')}</p>
+	{#if status}
+		<p class="status">{status}</p>
+	{/if}
 </main>
 
 <style>
@@ -21,7 +36,8 @@
 		font-size: 3rem;
 	}
 
-	.tagline {
+	.tagline,
+	.status {
 		margin: calc(var(--space) * 2) 0 0;
 		color: var(--text-muted);
 		font-family: var(--font-body);

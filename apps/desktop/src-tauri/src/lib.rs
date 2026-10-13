@@ -1,6 +1,9 @@
 //! Tauri shell. Commands stay thin: they translate between the UI and `trove_core` / `trove_store`.
 
+pub mod commands;
 pub mod data_folder;
+pub mod error;
+pub mod events;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -24,6 +27,7 @@ pub fn run() {
     tauri::Builder::default()
         .manage(data_folder)
         .manage(store)
+        .invoke_handler(tauri::generate_handler![commands::app_info])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

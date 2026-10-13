@@ -1,0 +1,4 @@
+# ts-rs writes the TypeScript bindings of the types that cross to the UI here when the tests run
+# (ADR 4). The files are checked in and CI fails when they are stale.
+[env]
+TS_RS_EXPORT_DIR = { value = "apps/desktop/src/lib/bindings", relative = true }
