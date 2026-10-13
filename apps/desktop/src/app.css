@@ -36,3 +36,35 @@ body {
 		animation: none !important;
 	}
 }
+
+/* A look is a structural treatment chosen per component in the theme's Looks table. A component puts
+   its look class on its root and reads these variables (docs/themes/system.md). */
+.look-open {
+	--look-bg: transparent;
+	--look-border: var(--line);
+	--look-radius: var(--radius-sm);
+	--look-shadow: none;
+}
+
+.look-soft {
+	--look-bg: var(--surface-raised);
+	--look-border: transparent;
+	--look-radius: var(--radius);
+	--look-shadow: none;
+}
+
+.look-float {
+	--look-bg: var(--surface);
+	--look-border: transparent;
+	--look-radius: var(--radius-lg);
+	--look-shadow: var(--shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation: none !important;
+		transition: none !important;
+	}
+}
