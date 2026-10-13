@@ -101,7 +101,7 @@ impl DataFolder {
     }
 
     pub fn database(&self) -> PathBuf {
-        self.root.join("trove.db")
+        self.root.join(trove_store::DATABASE_FILE)
     }
 
     pub fn files(&self) -> PathBuf {
@@ -109,7 +109,7 @@ impl DataFolder {
     }
 
     pub fn backups(&self) -> PathBuf {
-        self.root.join("backups")
+        self.root.join(trove_store::BACKUPS_DIR)
     }
 
     pub fn logs(&self) -> PathBuf {
