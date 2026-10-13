@@ -1,5 +1,9 @@
 /* Global styles. Every colour, font, radius and duration comes from the active theme's tokens. */
 
+@import '@fontsource-variable/cormorant-garamond';
+@import '@fontsource-variable/newsreader';
+@import '@fontsource-variable/albert-sans';
+@import '@fontsource-variable/fira-code';
 @import './lib/theme/tokens.css';
 
 *,
