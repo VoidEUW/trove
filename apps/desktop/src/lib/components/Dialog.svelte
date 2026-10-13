@@ -73,10 +73,10 @@
 	.dialog {
 		width: calc(var(--space) * 110);
 		max-width: calc(100vw - var(--space) * 8);
-		max-height: calc(100vh - var(--space) * 8);
 		margin: auto;
 		padding: 0;
-		overflow: auto;
+		/* Visible, so a menu opened inside the dialog is not cut off at its edge. */
+		overflow: visible;
 		border: var(--border-width) solid var(--look-border);
 		border-radius: var(--look-radius);
 		background: var(--look-bg);
