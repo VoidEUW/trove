@@ -57,7 +57,7 @@ fn release_2() -> Migrations<'static> {
 }
 
 #[test]
-fn a_new_data_folder_gets_the_database_with_the_log_and_nothing_else() {
+fn a_new_data_folder_gets_the_database_with_the_log_items_and_kinds() {
     let folder = data_folder();
     let root = folder.path().join("trove");
 
@@ -66,8 +66,8 @@ fn a_new_data_folder_gets_the_database_with_the_log_and_nothing_else() {
     assert!(root.join(DATABASE_FILE).is_file());
     assert_eq!(store.database(), root.join(DATABASE_FILE));
     let reader = store.reader().unwrap();
-    assert_eq!(tables(&reader), ["meta", "ops"]);
-    assert_eq!(user_version(&reader), 1);
+    assert_eq!(tables(&reader), ["items", "kinds", "meta", "ops"]);
+    assert_eq!(user_version(&reader), 2);
     assert!(
         backups(&root).is_empty(),
         "a brand-new database has nothing to back up"
@@ -126,7 +126,7 @@ fn a_database_from_a_newer_trove_is_refused_and_left_untouched() {
             error,
             StoreError::DatabaseTooNew {
                 found: 99,
-                supported: 1
+                supported: 2
             }
         ),
         "got {error:?}"

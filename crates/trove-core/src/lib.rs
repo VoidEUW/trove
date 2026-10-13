@@ -3,8 +3,12 @@
 
 pub mod hlc;
 pub mod id;
+pub mod item;
+pub mod kind;
 pub mod op;
 
 pub use hlc::{Clock, ClockError, Hlc, MAX_DRIFT_MS};
 pub use id::Id;
+pub use item::{ITEM_ENTITY, Item, ItemDraft, ItemError, MAX_QUANTITY, NewItem};
+pub use kind::{Counting, KIND_ENTITY, Kind, KindLabel, seed_kinds};
 pub use op::{OP_VERSION, Operation, Patch, PatchError};

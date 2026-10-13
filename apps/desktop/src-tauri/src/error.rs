@@ -55,7 +55,9 @@ impl From<StoreError> for AppError {
             StoreError::Sqlite(_) | StoreError::Migration(_) | StoreError::Io { .. } => {
                 ErrorCode::Storage
             }
-            StoreError::Projection(_) => ErrorCode::Invalid,
+            StoreError::Projection(_) | StoreError::Item(_) | StoreError::UnknownKind(_) => {
+                ErrorCode::Invalid
+            }
             StoreError::Id(_)
             | StoreError::Clock(_)
             | StoreError::Json(_)
