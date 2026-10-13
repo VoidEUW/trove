@@ -48,15 +48,11 @@ pub async fn app_info<R: Runtime>(app: AppHandle<R>) -> Result<AppInfo, AppError
 
 #[cfg(test)]
 mod tests {
-    use serde_json::{Value, json};
-    use tauri::ipc::{CallbackFn, InvokeBody};
-    use tauri::test::{
-        INVOKE_KEY, MockRuntime, get_ipc_response, mock_builder, mock_context, noop_assets,
-    };
-    use tauri::webview::InvokeRequest;
-    use tauri::{WebviewWindow, WebviewWindowBuilder};
+    use serde_json::json;
+    use tauri::Manager;
 
     use crate::error::ErrorCode;
+    use crate::testing::{app, invoke};
 
     use super::*;
 
@@ -65,50 +61,12 @@ mod tests {
         Err(AppError::new(ErrorCode::Storage, "disk full"))
     }
 
-    /// An app on the mock runtime with a real store in a temporary data folder.
-    fn app() -> (
-        tauri::App<MockRuntime>,
-        WebviewWindow<MockRuntime>,
-        tempfile::TempDir,
-    ) {
-        let folder = tempfile::tempdir().unwrap();
-        let store = Store::open(folder.path(), 1_760_000_000_000).unwrap();
-        let app = mock_builder()
-            .manage(store)
-            .invoke_handler(tauri::generate_handler![app_info, always_fails])
-            .build(mock_context(noop_assets()))
-            .unwrap();
-        let window = WebviewWindowBuilder::new(&app, "main", Default::default())
-            .build()
-            .unwrap();
-        (app, window, folder)
-    }
-
-    fn invoke(window: &WebviewWindow<MockRuntime>, cmd: &str) -> Result<Value, Value> {
-        let request = InvokeRequest {
-            cmd: cmd.into(),
-            callback: CallbackFn(0),
-            error: CallbackFn(1),
-            url: if cfg!(windows) || cfg!(target_os = "android") {
-                "http://tauri.localhost"
-            } else {
-                "tauri://localhost"
-            }
-            .parse()
-            .unwrap(),
-            body: InvokeBody::default(),
-            headers: Default::default(),
-            invoke_key: INVOKE_KEY.to_string(),
-        };
-        get_ipc_response(window, request).map(|body| body.deserialize().unwrap())
-    }
-
     #[test]
     fn a_command_reaches_the_ui_as_a_typed_value() {
-        let (app, window, _folder) = app();
+        let (app, window, _folder) = app(tauri::generate_handler![app_info, always_fails]);
         let device_id = app.state::<Store>().device_id().to_string();
 
-        let value = invoke(&window, "app_info").unwrap();
+        let value = invoke(&window, "app_info", json!({})).unwrap();
 
         assert_eq!(
             value,
@@ -118,9 +76,9 @@ mod tests {
 
     #[test]
     fn a_failing_command_reaches_the_ui_as_a_typed_error() {
-        let (_app, window, _folder) = app();
+        let (_app, window, _folder) = app(tauri::generate_handler![app_info, always_fails]);
 
-        let error = invoke(&window, "always_fails").unwrap_err();
+        let error = invoke(&window, "always_fails", json!({})).unwrap_err();
 
         assert_eq!(error, json!({ "code": "storage", "message": "disk full" }));
     }

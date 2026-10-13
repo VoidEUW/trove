@@ -4,6 +4,9 @@ pub mod commands;
 pub mod data_folder;
 pub mod error;
 pub mod events;
+pub mod items;
+#[cfg(test)]
+mod testing;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 
@@ -11,7 +14,7 @@ use data_folder::DataFolder;
 use trove_store::Store;
 
 /// Milliseconds since the Unix epoch. `trove-core` does no IO, so the shell reads the clock.
-fn now_ms() -> u64 {
+pub(crate) fn now_ms() -> u64 {
     let since_epoch = SystemTime::now()
         .duration_since(UNIX_EPOCH)
         .expect("system clock is before 1970");
@@ -27,7 +30,12 @@ pub fn run() {
     tauri::Builder::default()
         .manage(data_folder)
         .manage(store)
-        .invoke_handler(tauri::generate_handler![commands::app_info])
+        .invoke_handler(tauri::generate_handler![
+            commands::app_info,
+            items::list_items,
+            items::list_kinds,
+            items::add_item
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

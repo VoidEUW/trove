@@ -4,6 +4,20 @@
 	"error.internal": "Something went wrong inside Trove.",
 	"error.invalid": "That is not valid.",
 	"error.storage": "Trove could not read or write its data.",
+	"error.unknown_kind": "That kind does not exist.",
 	"home.tagline": "Know where everything in your home is.",
-	"home.version": "Version {version}"
+	"home.version": "Version {version}",
+	"item-form.name.required": "Give it a name",
+	"item-form.quantity.invalid": "Use a whole number of 1 or more",
+	"kind.artwork": "Artwork",
+	"kind.box": "Box",
+	"kind.documents": "Documents",
+	"kind.electrical": "Electrical",
+	"kind.furniture": "Furniture",
+	"kind.memories": "Memories",
+	"kind.other": "Other",
+	"kind.parts_and_manuals": "Parts & manuals",
+	"kind.software_key": "Software key",
+	"kind.tools": "Tools",
+	"kind.valuables": "Valuables"
 }
