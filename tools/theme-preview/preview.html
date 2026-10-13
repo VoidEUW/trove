@@ -23,7 +23,7 @@
 			.meta { display: grid; grid-template-columns: auto auto; gap: 4px 20px; font-size: 12px; align-self: start; }
 			.meta dt { color: #8a929e; }
 			.meta dd { margin: 0; font-family: ui-monospace, Menlo, monospace; }
-			.panels { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+			.panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
 			.below { display: grid; grid-template-columns: 3fr 2fr; gap: 48px; margin-top: 40px; }
 			.below table { width: 100%; border-collapse: collapse; font-size: 12px; }
 			.below td { padding: 5px 8px 5px 0; border-bottom: 1px solid #1e232b; vertical-align: top; }
@@ -140,6 +140,26 @@
 			.collapsible .c-head small { color: var(--text-faint); font-weight: 400; }
 			.collapsible .c-head svg { transform: rotate(90deg); color: var(--text-faint); }
 			.collapsible .c-body { padding: 0 calc(var(--space) * 3) calc(var(--space) * 3) calc(var(--space) * 9); color: var(--text-muted); }
+
+			.dtable { overflow-x: auto; }
+			.dtable table { width: 100%; border-collapse: collapse; }
+			.dtable th { padding: calc(var(--space) * 2.5) calc(var(--space) * 3); text-align: left; font: 600 10.5px/1 var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); border-bottom: var(--border-width) solid var(--line); white-space: nowrap; }
+			.dtable th.sorted { color: var(--text); }
+			.dtable th .dir { display: inline-flex; vertical-align: middle; margin-left: calc(var(--space) * 1); color: var(--accent); }
+			.dtable td { padding: calc(var(--space) * 2.5) calc(var(--space) * 3); border-bottom: var(--border-width) solid var(--line); color: var(--text-muted); }
+			.dtable tr:last-child td { border-bottom: 0; }
+			.dtable td.name { color: var(--text); font-family: var(--font-body); font-size: var(--body-size); }
+			.dtable td.name .cell { display: flex; align-items: center; gap: calc(var(--space) * 2); }
+			.dtable td.name small { font: 11px var(--font-mono); color: var(--text-faint); }
+			.dtable td.end { width: 1%; text-align: right; color: var(--text-faint); }
+			.dtable td.name .cell { white-space: nowrap; }
+			.dtable tr.hover td { background: var(--hover); }
+			.dtable tr.selected td { background: var(--surface-raised); }
+			.dtable tr.selected td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+			.dtable.look-open { border-radius: var(--radius-sm); }
+			.dtable.look-open tr.selected td { background: var(--accent-soft); }
+			.avatars { display: inline-flex; }
+			.avatars .avatar + .avatar { margin-left: -6px; box-shadow: 0 0 0 2px var(--surface); }
 
 			.spinner { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--focus); }
 			.progress { width: 160px; height: 4px; border-radius: var(--radius-pill); background: var(--surface-raised); overflow: hidden; }
@@ -261,6 +281,16 @@
 		<kbd>⌘</kbd><kbd>K</kbd><span class="avatar">AL</span>
 	</div>
 	<div class="collapsible is-panel ${look('ui/collapsible')}"><div class="c-head">${i('chevR')}Advanced<small>3 settings</small></div><div class="c-body">Options most people never need to change.</div></div>
+	<div class="dtable is-panel ${look('ui/data-table')}">
+		<table>
+			<thead><tr><th class="sorted">Name<span class="dir">${i('chevD')}</span></th><th>Kind</th><th>Path</th><th>Owners</th><th>Condition</th><th></th></tr></thead>
+			<tbody>
+				<tr class="selected"><td class="name"><div class="cell">${i('file')}Floor lamp<small>8F2K</small></div></td><td><span class="pill">Furniture</span></td><td>Living room › Shelf</td><td><span class="avatars"><span class="avatar">AL</span><span class="avatar">MK</span></span></td><td><span class="pill success">Good</span></td><td class="end">${i('more')}</td></tr>
+				<tr class="hover"><td class="name"><div class="cell">${i('file')}Stand mixer<small>3QD9</small></div></td><td><span class="pill">Electrical</span></td><td>Kitchen › Cupboard</td><td><span class="avatars"><span class="avatar">AL</span></span></td><td><span class="pill warning">Fragile</span></td><td class="end">${i('more')}</td></tr>
+				<tr><td class="name"><div class="cell">${i('file')}Warranty folder<small>7B1M</small></div></td><td><span class="pill">Documents</span></td><td>Study › Drawer</td><td><span class="avatars"><span class="avatar">MK</span></span></td><td><span class="pill success">Mint</span></td><td class="end">${i('more')}</td></tr>
+			</tbody>
+		</table>
+	</div>
 	<div class="row" style="gap:calc(var(--space) * 6)">
 		<span class="spinner"></span>
 		<span class="progress"><i></i></span>

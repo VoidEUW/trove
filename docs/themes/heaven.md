@@ -23,6 +23,7 @@ Schema `theme/1` · picture [`heaven.png`](heaven.png) · components and rules i
 | `ui/card` | soft |
 | `ui/collapsible` | soft |
 | `ui/chips` | soft |
+| `ui/data-table` | soft |
 | `ui/tooltip` | soft |
 | `ui/spinner` | open |
 | `ui/progress-bar` | soft |
