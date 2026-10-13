@@ -1,16 +1,18 @@
-//! Opening the database: version check, backup, connection setup, migration and device id.
+//! The open database: version check, backup, connection setup, migration and device id on open, and
+//! the service layer that writes operations and replays them (ADR 9, ADR 10).
 
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::sync::{Mutex, PoisonError};
 use std::time::Duration;
 
-use rusqlite::{Connection, OpenFlags};
+use rusqlite::{Connection, OpenFlags, Transaction, TransactionBehavior};
 use rusqlite_migration::{Migrations, SchemaVersion};
-use trove_core::Id;
+use trove_core::{Clock, Id, Operation, Patch};
 
 use crate::error::StoreError;
-use crate::{backup, migrations};
+use crate::projection::Projection;
+use crate::{backup, migrations, oplog};
 
 /// The database inside the data folder (ADR 8).
 pub const DATABASE_FILE: &str = "trove.db";
@@ -26,7 +28,10 @@ const BUSY_TIMEOUT: Duration = Duration::from_secs(5);
 pub struct Store {
     database: PathBuf,
     writer: Mutex<Connection>,
+    clock: Mutex<Clock>,
     device_id: Id,
+    /// In registration order, so a parent entity can be registered before the ones that refer to it.
+    projections: Vec<Box<dyn Projection>>,
 }
 
 impl Store {
@@ -72,11 +77,78 @@ impl Store {
         conn.pragma_update_and_check(None, "journal_mode", "WAL", |row| row.get::<_, String>(0))?;
         migrations.to_latest(&mut conn)?;
         let device_id = device_id(&mut conn, now_ms)?;
+        let clock = Clock::new(oplog::latest_hlc(&conn)?);
 
         Ok(Self {
             database,
             writer: Mutex::new(conn),
+            clock: Mutex::new(clock),
             device_id,
+            projections: Vec::new(),
+        })
+    }
+
+    /// Registers the handler for one entity type. Register at startup, parents before the entities
+    /// that refer to them: replay empties the tables in the opposite order.
+    pub fn register(&mut self, projection: impl Projection + 'static) -> Result<(), StoreError> {
+        let entity = projection.entity();
+        if self.projection(entity).is_ok() {
+            return Err(StoreError::Projection(format!(
+                "entity `{entity}` already has a projection"
+            )));
+        }
+        self.projections.push(Box::new(projection));
+        Ok(())
+    }
+
+    /// Records a local change: stamps it with this device's next clock value, appends it to the log
+    /// and applies it to the projection in one transaction. If either step fails, neither is stored
+    /// and the clock does not move. `entity_id` is a new id for a new entity, so the first call for
+    /// an id creates it.
+    pub fn record(
+        &self,
+        entity: &str,
+        entity_id: Id,
+        patch: Patch,
+        now_ms: u64,
+    ) -> Result<Operation, StoreError> {
+        self.with_writer(|conn| {
+            let mut clock = self.clock.lock().unwrap_or_else(PoisonError::into_inner);
+            let mut next = *clock;
+            let hlc = next.tick(now_ms)?;
+            let op = Operation::new(self.device_id, hlc, entity, entity_id, patch);
+            self.apply_in(conn, &op)?;
+            *clock = next;
+            Ok(op)
+        })
+    }
+
+    /// Appends `op` to the log and applies it to the projection in one transaction: if the log
+    /// refuses it (an id already present) or the entity's handler fails, neither is stored.
+    pub fn apply(&self, op: &Operation) -> Result<(), StoreError> {
+        self.with_writer(|conn| self.apply_in(conn, op))
+    }
+
+    /// Rebuilds the projection from the log: empties every registered handler's tables, then applies
+    /// all operations in `(hlc, device_id)` order. All or nothing. Returns how many were applied.
+    pub fn replay(&self) -> Result<usize, StoreError> {
+        self.with_writer(|conn| {
+            let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+            for projection in self.projections.iter().rev() {
+                projection.clear(&tx)?;
+            }
+            let mut applied = 0;
+            {
+                let mut statement = tx.prepare(oplog::ORDERED)?;
+                let mut rows = statement.query([])?;
+                while let Some(row) = rows.next()? {
+                    let op = oplog::operation_from_row(row)?;
+                    self.projection(&op.entity)?.apply(&tx, &op)?;
+                    applied += 1;
+                }
+            }
+            tx.commit()?;
+            Ok(applied)
         })
     }
 
@@ -98,6 +170,28 @@ impl Store {
         // its open transaction back when the guard dropped.
         let mut writer = self.writer.lock().unwrap_or_else(PoisonError::into_inner);
         f(&mut writer)
+    }
+
+    fn apply_in(&self, conn: &mut Connection, op: &Operation) -> Result<(), StoreError> {
+        let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
+        self.apply_to(&tx, op)?;
+        tx.commit()?;
+        Ok(())
+    }
+
+    fn apply_to(&self, tx: &Transaction<'_>, op: &Operation) -> Result<(), StoreError> {
+        oplog::check_version(op)?;
+        let projection = self.projection(&op.entity)?;
+        oplog::append(tx, op)?;
+        projection.apply(tx, op)
+    }
+
+    fn projection(&self, entity: &str) -> Result<&dyn Projection, StoreError> {
+        self.projections
+            .iter()
+            .find(|projection| projection.entity() == entity)
+            .map(|projection| &**projection)
+            .ok_or_else(|| StoreError::UnknownEntity(entity.to_owned()))
     }
 
     /// A new read-only connection. WAL lets any number of them read while the writer writes.

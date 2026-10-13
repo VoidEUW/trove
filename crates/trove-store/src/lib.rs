@@ -4,7 +4,10 @@
 mod backup;
 mod error;
 pub mod migrations;
+mod oplog;
+mod projection;
 mod store;
 
 pub use error::StoreError;
+pub use projection::Projection;
 pub use store::{BACKUPS_DIR, DATABASE_FILE, Store};
