@@ -118,7 +118,12 @@ jobs:
             case $code in 0|2|3) ;; *) exit "$code" ;; esac
           done
           for crate in trove-core trove-store; do
-            node tools/quality/check.mjs mutation "$crate" "mutants-$crate/mutants.out/outcomes.json"
+            # cargo-mutants writes nothing when the diff changes no Rust source.
+            if [ -f "mutants-$crate/mutants.out/outcomes.json" ]; then
+              node tools/quality/check.mjs mutation "$crate" "mutants-$crate/mutants.out/outcomes.json"
+            else
+              echo "$crate: no mutants in this diff"
+            fi
           done
       - uses: actions/upload-artifact@v4
         if: always()
