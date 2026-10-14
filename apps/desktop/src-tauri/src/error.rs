@@ -4,13 +4,13 @@
 
 use serde::Serialize;
 use trove_core::id::IdError;
-use trove_core::{ClockError, PatchError};
+use trove_core::{ClockError, ItemError, PatchError};
 use trove_store::StoreError;
 use ts_rs::TS;
 
-/// What went wrong, in terms the UI can show text for. Every code needs an `error.<code>` key in
-/// `apps/desktop/src/lib/i18n/en.json`; the UI's code-to-key table is typed, so a missing one fails
-/// `npm run check`.
+/// What went wrong, in terms the UI can show text for. Every code needs a key in
+/// `apps/desktop/src/lib/i18n/en.json` named by the UI's code-to-key table (`api/errors.ts`), which is
+/// typed, so a missing one fails `npm run check`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, TS)]
 #[serde(rename_all = "snake_case")]
 #[ts(export)]
@@ -21,6 +21,12 @@ pub enum ErrorCode {
     DatabaseTooNew,
     /// The request was refused as not valid.
     Invalid,
+    /// An item was saved without a name.
+    NameRequired,
+    /// An item's quantity is not a whole number from 1.
+    QuantityInvalid,
+    /// The kind chosen for an item does not exist.
+    UnknownKind,
     /// A bug or damaged data: nothing the user can fix.
     Internal,
 }
@@ -55,6 +61,9 @@ impl From<StoreError> for AppError {
             StoreError::Sqlite(_) | StoreError::Migration(_) | StoreError::Io { .. } => {
                 ErrorCode::Storage
             }
+            StoreError::Item(ItemError::NameRequired) => ErrorCode::NameRequired,
+            StoreError::Item(ItemError::QuantityInvalid(_)) => ErrorCode::QuantityInvalid,
+            StoreError::UnknownKind(_) => ErrorCode::UnknownKind,
             StoreError::Projection(_) => ErrorCode::Invalid,
             StoreError::Id(_)
             | StoreError::Clock(_)
@@ -62,6 +71,16 @@ impl From<StoreError> for AppError {
             | StoreError::UnknownEntity(_)
             | StoreError::DuplicateOperation(_)
             | StoreError::UnsupportedOpVersion { .. } => ErrorCode::Internal,
+        };
+        Self::new(code, error.to_string())
+    }
+}
+
+impl From<ItemError> for AppError {
+    fn from(error: ItemError) -> Self {
+        let code = match error {
+            ItemError::NameRequired => ErrorCode::NameRequired,
+            ItemError::QuantityInvalid(_) => ErrorCode::QuantityInvalid,
         };
         Self::new(code, error.to_string())
     }
