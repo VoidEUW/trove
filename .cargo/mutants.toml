@@ -1,0 +1,3 @@
+# Mutation testing (ADR 17). A mutant that no test can catch is skipped here, with the reason.
+# Format: exclude_re = ["<regex matching the mutant's name>"]
+exclude_re = []
