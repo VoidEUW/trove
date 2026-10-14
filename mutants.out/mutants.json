@@ -1,0 +1,322 @@
+[
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace Id::seed -> Self with Default::default()\n@@ -20,22 +20,17 @@\n             Timestamp::from_unix(NoContext, now_ms / 1000, (now_ms % 1000) as u32 * 1_000_000);\n         Self(Uuid::new_v7(timestamp))\n     }\n \n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n-        const SEED_TIMESTAMP: u128 = 0;\n-        const VERSION_7: u128 = 0x7 << 76;\n-        const VARIANT: u128 = 0b10 << 62;\n-        Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n-        ))\n+        Default::default() /* ~ changed by cargo-mutants ~ */\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n                 let (secs, nanos) = ts.to_unix();\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "FnValue",
+    "name": "crates/trove-core/src/id.rs:28:9: replace Id::seed -> Self with Default::default()",
+    "package": "trove-core",
+    "replacement": "Default::default()",
+    "span": {
+      "end": {
+        "column": 11,
+        "line": 33
+      },
+      "start": {
+        "column": 9,
+        "line": 28
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace << with >> in Id::seed\n@@ -21,17 +21,17 @@\n         Self(Uuid::new_v7(timestamp))\n     }\n \n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n-        const VERSION_7: u128 = 0x7 << 76;\n+        const VERSION_7: u128 = 0x7 >> /* ~ changed by cargo-mutants ~ */ 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n             (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:29:37: replace << with >> in Id::seed",
+    "package": "trove-core",
+    "replacement": ">>",
+    "span": {
+      "end": {
+        "column": 39,
+        "line": 29
+      },
+      "start": {
+        "column": 37,
+        "line": 29
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace << with >> in Id::seed\n@@ -22,17 +22,17 @@\n     }\n \n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n-        const VARIANT: u128 = 0b10 << 62;\n+        const VARIANT: u128 = 0b10 >> /* ~ changed by cargo-mutants ~ */ 62;\n         Self(Uuid::from_u128(\n             (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:30:36: replace << with >> in Id::seed",
+    "package": "trove-core",
+    "replacement": ">>",
+    "span": {
+      "end": {
+        "column": 38,
+        "line": 30
+      },
+      "start": {
+        "column": 36,
+        "line": 30
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace | with & in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT & /* ~ changed by cargo-mutants ~ */ n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:58: replace | with & in Id::seed",
+    "package": "trove-core",
+    "replacement": "&",
+    "span": {
+      "end": {
+        "column": 59,
+        "line": 32
+      },
+      "start": {
+        "column": 58,
+        "line": 32
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace | with ^ in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT ^ /* ~ changed by cargo-mutants ~ */ n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:58: replace | with ^ in Id::seed",
+    "package": "trove-core",
+    "replacement": "^",
+    "span": {
+      "end": {
+        "column": 59,
+        "line": 32
+      },
+      "start": {
+        "column": 58,
+        "line": 32
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace | with & in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP << 80) | VERSION_7 & /* ~ changed by cargo-mutants ~ */ VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:48: replace | with & in Id::seed",
+    "package": "trove-core",
+    "replacement": "&",
+    "span": {
+      "end": {
+        "column": 49,
+        "line": 32
+      },
+      "start": {
+        "column": 48,
+        "line": 32
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace | with ^ in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP << 80) | VERSION_7 ^ /* ~ changed by cargo-mutants ~ */ VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:48: replace | with ^ in Id::seed",
+    "package": "trove-core",
+    "replacement": "^",
+    "span": {
+      "end": {
+        "column": 49,
+        "line": 32
+      },
+      "start": {
+        "column": 48,
+        "line": 32
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace | with & in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP << 80) & /* ~ changed by cargo-mutants ~ */ VERSION_7 | VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:36: replace | with & in Id::seed",
+    "package": "trove-core",
+    "replacement": "&",
+    "span": {
+      "end": {
+        "column": 37,
+        "line": 32
+      },
+      "start": {
+        "column": 36,
+        "line": 32
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace | with ^ in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP << 80) ^ /* ~ changed by cargo-mutants ~ */ VERSION_7 | VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:36: replace | with ^ in Id::seed",
+    "package": "trove-core",
+    "replacement": "^",
+    "span": {
+      "end": {
+        "column": 37,
+        "line": 32
+      },
+      "start": {
+        "column": 36,
+        "line": 32
+      }
+    }
+  },
+  {
+    "diff": "--- crates/trove-core/src/id.rs\n+++ replace << with >> in Id::seed\n@@ -24,17 +24,17 @@\n     /// A fixed id for a row every installation ships with, such as a seed kind (ADR 9). `n` tells the\n     /// rows apart. The id is a valid version 7 UUID whose timestamp is zero, so it sorts before every\n     /// id made by [`Id::new`].\n     pub const fn seed(n: u16) -> Self {\n         const SEED_TIMESTAMP: u128 = 0;\n         const VERSION_7: u128 = 0x7 << 76;\n         const VARIANT: u128 = 0b10 << 62;\n         Self(Uuid::from_u128(\n-            (SEED_TIMESTAMP << 80) | VERSION_7 | VARIANT | n as u128,\n+            (SEED_TIMESTAMP >> /* ~ changed by cargo-mutants ~ */ 80) | VERSION_7 | VARIANT | n as u128,\n         ))\n     }\n \n     /// The milliseconds since the Unix epoch encoded in the id.\n     pub fn timestamp_ms(self) -> u64 {\n         self.0\n             .get_timestamp()\n             .map(|ts| {\n",
+    "file": "crates/trove-core/src/id.rs",
+    "function": {
+      "function_name": "Id::seed",
+      "return_type": "-> Self",
+      "span": {
+        "end": {
+          "column": 6,
+          "line": 34
+        },
+        "start": {
+          "column": 5,
+          "line": 24
+        }
+      }
+    },
+    "genre": "BinaryOperator",
+    "name": "crates/trove-core/src/id.rs:32:29: replace << with >> in Id::seed",
+    "package": "trove-core",
+    "replacement": ">>",
+    "span": {
+      "end": {
+        "column": 31,
+        "line": 32
+      },
+      "start": {
+        "column": 29,
+        "line": 32
+      }
+    }
+  }
+]

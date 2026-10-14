@@ -32,6 +32,15 @@ disable-model-invocation: true
    cargo test --workspace
    cargo deny check      # if cargo-deny is installed; CI runs it either way
    ```
+   If the diff touches Rust, also run the measurements of ADR 17 and show the numbers. Tier 1 code
+   (core, store, migrations, operation log) is also mutation-tested. If a number is below its
+   threshold, stop, as for a failing check.
+   ```sh
+   cargo llvm-cov --workspace --json --output-path /tmp/cov.json
+   node tools/quality/check.mjs coverage /tmp/cov.json
+   git diff <base>...HEAD > /tmp/pr.diff && cargo mutants -p <crate> --in-diff /tmp/pr.diff   # Tier 1 crates only
+   node tools/quality/check.mjs mutation <crate> mutants.out/outcomes.json
+   ```
 3. **Scope.** `git diff <base>...HEAD --stat`. Flag files that don't belong to the issue (for a final
    pull request: to the parent and its sub-issues), and new literal colours, fonts, radii or durations in
    `apps/desktop/src` (see docs/themes/README.md). Also flag strings that bypass `t()` (see
@@ -53,7 +62,11 @@ disable-model-invocation: true
    - **Final** into `main`: `Closes #<issue>`, then one `Closes #<n>` line for each descendant that
      is still open (normally none: they were closed when their pull requests merged).
 
-   Then one or two sentences of what and why, and the checklist items that hold ticked.
+   Then one or two sentences of what and why, a **Try to break this** section and the checklist items
+   that hold ticked. The section lists the fragile spots of the change, the test that guards each and
+   what is not covered (take them from `/add-tests` if it was used, and from the diff if not). It
+   ends by asking the reviewer for cases to add. If the diff has no code to test, write "Nothing to
+   break: docs and tooling only."
 7. Give the user the PR URL. Do not merge unless the user allows it. A final pull request is merged
    with its branch deleted.
 8. **Close the issue** once a pull request whose base is not `main` is merged, because GitHub will not:

@@ -1,0 +1,1 @@
+crates/trove-core/src/id.rs:28:9: replace Id::seed -> Self with Default::default()

@@ -1,0 +1,675 @@
+{
+  "outcomes": [
+    {
+      "scenario": "Baseline",
+      "summary": "Success",
+      "log_path": "log/baseline.log",
+      "diff_path": null,
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 3.946323042,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.38627575,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:28:9: replace Id::seed -> Self with Default::default()",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 28,
+              "column": 9
+            },
+            "end": {
+              "line": 33,
+              "column": 11
+            }
+          },
+          "replacement": "Default::default()",
+          "genre": "FnValue"
+        }
+      },
+      "summary": "Unviable",
+      "log_path": "log/crates__trove-core__src__id.rs_line_28_col_9.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_28_col_9.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.21852375,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:29:37: replace << with >> in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 29,
+              "column": 37
+            },
+            "end": {
+              "line": 29,
+              "column": 39
+            }
+          },
+          "replacement": ">>",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_29_col_37.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_29_col_37.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.269473625,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.272238,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:30:36: replace << with >> in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 30,
+              "column": 36
+            },
+            "end": {
+              "line": 30,
+              "column": 38
+            }
+          },
+          "replacement": ">>",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_30_col_36.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_30_col_36.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.274445458,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.26713625,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:58: replace | with & in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 58
+            },
+            "end": {
+              "line": 32,
+              "column": 59
+            }
+          },
+          "replacement": "&",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_58.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_58.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.275544541,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.327287208,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:58: replace | with ^ in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 58
+            },
+            "end": {
+              "line": 32,
+              "column": 59
+            }
+          },
+          "replacement": "^",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_58_001.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_58_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.328743166,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.379081917,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:48: replace | with & in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 48
+            },
+            "end": {
+              "line": 32,
+              "column": 49
+            }
+          },
+          "replacement": "&",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_48.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_48.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.27723775,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.269790583,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:48: replace | with ^ in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 48
+            },
+            "end": {
+              "line": 32,
+              "column": 49
+            }
+          },
+          "replacement": "^",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_48_001.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_48_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.322937791,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.330110333,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:36: replace | with & in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 36
+            },
+            "end": {
+              "line": 32,
+              "column": 37
+            }
+          },
+          "replacement": "&",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "CaughtMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_36.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_36.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.268807167,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.273805834,
+          "process_status": {
+            "Failure": 101
+          },
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:36: replace | with ^ in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 36
+            },
+            "end": {
+              "line": 32,
+              "column": 37
+            }
+          },
+          "replacement": "^",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_36_001.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_36_001.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.270777791,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.325864833,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "scenario": {
+        "Mutant": {
+          "name": "crates/trove-core/src/id.rs:32:29: replace << with >> in Id::seed",
+          "package": "trove-core",
+          "file": "crates/trove-core/src/id.rs",
+          "function": {
+            "function_name": "Id::seed",
+            "return_type": "-> Self",
+            "span": {
+              "start": {
+                "line": 24,
+                "column": 5
+              },
+              "end": {
+                "line": 34,
+                "column": 6
+              }
+            }
+          },
+          "span": {
+            "start": {
+              "line": 32,
+              "column": 29
+            },
+            "end": {
+              "line": 32,
+              "column": 31
+            }
+          },
+          "replacement": ">>",
+          "genre": "BinaryOperator"
+        }
+      },
+      "summary": "MissedMutant",
+      "log_path": "log/crates__trove-core__src__id.rs_line_32_col_29.log",
+      "diff_path": "diff/crates__trove-core__src__id.rs_line_32_col_29.diff",
+      "phase_results": [
+        {
+          "phase": "Build",
+          "duration": 0.26971125,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--no-run",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        },
+        {
+          "phase": "Test",
+          "duration": 0.329893958,
+          "process_status": "Success",
+          "argv": [
+            "/Users/void/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+            "test",
+            "--verbose",
+            "--package=trove-core@0.1.0"
+          ]
+        }
+      ]
+    }
+  ],
+  "total_mutants": 10,
+  "missed": 4,
+  "caught": 5,
+  "timeout": 0,
+  "unviable": 1,
+  "success": 0,
+  "start_time": "2026-10-14T19:30:12.37467Z",
+  "end_time": "2026-10-14T19:30:24.197121Z",
+  "cargo_mutants_version": "27.1.0"
+}
