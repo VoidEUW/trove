@@ -159,13 +159,18 @@ account and no network dependency. Dependencies point downwards only.
 - **Search** *(proposed in ADR 11)*: one FTS5 table written in the same transaction as the data;
   results carry their effective place and room; secrets and private documents are never indexed.
 - **Secrets**: never logged, never indexed, revealed only on demand.
-- **Testing seams**: core is pure; store tests use a temporary `TROVE_HOME`; the solver has property
-  tests; replay is tested against the migrated projection.
+- **Testing**: a risk-tiered bar. The data path (core, store, migrations, operation log) needs line
+  coverage ≥ 90%, mutation score ≥ 85%, property tests and a golden fixture per `op_version`; shell
+  commands need ≥ 80% and IPC tests; the UI gets component, accessibility and browser smoke tests. CI
+  holds the numbers, and every pull request lists "Try to break this" cases. Core is pure, store tests use
+  a temporary folder and replay is tested against the migrated projection. How each tier is tested lives
+  in `docs/tests/`.
 
 *Source:* [ADR 4](docs/adr/0004-typed-command-boundary.md),
 [ADR 5](docs/adr/0005-domain-model.md), [ADR 10](docs/adr/0010-operations-as-source-of-truth.md),
 [ADR 11](docs/adr/0011-search-with-fts5.md) (proposed),
-[ADR 12](docs/adr/0012-attachments-and-secrets.md) (proposed)
+[ADR 12](docs/adr/0012-attachments-and-secrets.md) (proposed),
+[ADR 17](docs/adr/0017-risk-tiered-quality-bar.md)
 
 ## 9. Decisions
 
@@ -187,6 +192,7 @@ account and no network dependency. Dependencies point downwards only.
 | [14](docs/adr/0014-ui-architecture-and-tokens.md) | SvelteKit SPA styled only by Heaven tokens | accepted |
 | [15](docs/adr/0015-ui-languages.md) | English and German from the first component | accepted |
 | [16](docs/adr/0016-operation-encoding-and-clock-format.md) | JSON patch operations ordered by a packed 64-bit HLC | accepted |
+| [17](docs/adr/0017-risk-tiered-quality-bar.md) | Risk-tiered tests: mutation and property tests on the data path | accepted |
 
 ## 10. Open questions
 

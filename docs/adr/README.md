@@ -43,3 +43,4 @@ and what follows from it.
 | [0014](0014-ui-architecture-and-tokens.md) | The UI is a SvelteKit SPA whose look comes only from the Heaven tokens | Accepted |
 | [0015](0015-ui-languages.md) | The interface is in English and German from the first component | Accepted |
 | [0016](0016-operation-encoding-and-clock-format.md) | Operations are JSON patches ordered by a packed 64-bit hybrid logical clock | Accepted |
+| [0017](0017-risk-tiered-quality-bar.md) | Tests are risk-tiered: mutation and property tests on the data path, lighter further out | Accepted |
