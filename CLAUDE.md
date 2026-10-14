@@ -45,7 +45,8 @@ node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after e
   is stored as typed and never translated.
 - **Secrets.** Never logged, never indexed, revealed only on demand.
 - **Decisions.** Do not make a structural decision in code. If no ADR covers it, stop and suggest an
-  `adr` issue. ADRs are the only design docs; don't create other planning, status or TODO files.
+  `adr` issue. ADRs are the only design docs; don't create other planning, status or TODO files. `docs/tests/`
+  holds reference notes on testing, not decisions.
 - **Issues.** Issues are the plan and guide the work step by step. An issue whose work has several
   distinct parts, or needs more than a few prompts, is split into sub-issues; an issue made of small
   steps that each fit in one prompt is not.
@@ -57,8 +58,11 @@ node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after e
   goes straight to `main`. See `CONTRIBUTING.md`.
 - **Rust.** Edition 2024. No `unsafe`. Clippy warnings fail CI. No `unwrap` outside tests; `expect`
   only at startup in the shell.
-- **Tests.** Core is pure and covered by unit tests; the solver also by property tests. Store tests
-  use a temporary `TROVE_HOME` and never touch real data.
+- **Tests.** Risk-tiered ([ADR 17](docs/adr/0017-risk-tiered-quality-bar.md)). The data path (core,
+  store, migrations, operation log) needs line coverage ≥ 90%, mutation score ≥ 85%, property tests and
+  a golden fixture per `op_version`; commands ≥ 80% with IPC tests; UI component and accessibility
+  tests. A bug fix starts with a failing test. Core is pure; store tests use a temporary folder and
+  never touch real data. Every PR body lists "Try to break this" cases. Use `/add-tests`.
 
 ## Skills
 
