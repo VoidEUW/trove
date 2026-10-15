@@ -17,4 +17,5 @@ trove-core.workspace = true
 workspace = true
 
 [dev-dependencies]
+proptest = "1.12.0"
 tempfile = "3.27.0"

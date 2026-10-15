@@ -115,6 +115,7 @@ mod tests {
     use super::*;
 
     const GOLDEN_V1: &str = include_str!("../tests/fixtures/op_v1.json");
+    const GOLDEN_V1_KIND: &str = include_str!("../tests/fixtures/op_v1_kind.json");
 
     fn id(text: &str) -> Id {
         text.parse().unwrap()
@@ -152,6 +153,37 @@ mod tests {
         assert_eq!(
             serde_json::to_string(&expected).unwrap(),
             GOLDEN_V1.trim_end()
+        );
+    }
+
+    #[test]
+    fn op_version_1_kind_json_is_pinned() {
+        let mut patch = Patch::new();
+        patch
+            .set("name", json!("Pet supplies"))
+            .unwrap()
+            .set("counting", json!("counted"))
+            .unwrap()
+            .set("container", json!(true))
+            .unwrap()
+            .clear("archived")
+            .unwrap();
+        let expected = Operation {
+            op_id: id("0199d9e0-1111-7000-8000-000000000011"),
+            device_id: id("0199d9e0-2222-7000-8000-000000000002"),
+            hlc: Hlc::new(1_760_000_000_000, 8).unwrap(),
+            op_version: 1,
+            entity: "kind".to_owned(),
+            entity_id: id("0199d9e0-4444-7000-8000-000000000005"),
+            patch,
+        };
+        assert_eq!(
+            serde_json::from_str::<Operation>(GOLDEN_V1_KIND).unwrap(),
+            expected
+        );
+        assert_eq!(
+            serde_json::to_string(&expected).unwrap(),
+            GOLDEN_V1_KIND.trim_end()
         );
     }
 
@@ -206,6 +238,13 @@ mod tests {
         assert_eq!(patch.set("", json!(1)).unwrap_err(), PatchError::EmptyField);
         assert_eq!(patch.clear("").unwrap_err(), PatchError::EmptyField);
         assert!(patch.is_empty());
+    }
+
+    #[test]
+    fn a_patch_with_a_field_is_not_empty() {
+        let mut patch = Patch::new();
+        patch.clear("note").unwrap();
+        assert!(!patch.is_empty());
     }
 
     #[test]
