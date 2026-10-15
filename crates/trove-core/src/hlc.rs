@@ -185,6 +185,20 @@ mod tests {
     }
 
     #[test]
+    fn the_drift_limit_is_one_hour() {
+        assert_eq!(MAX_DRIFT_MS, 3_600_000);
+    }
+
+    #[test]
+    fn zero_is_a_valid_clock_value_and_negative_numbers_are_not() {
+        assert_eq!(Hlc::from_i64(0), Ok(Hlc::ZERO));
+        assert_eq!(
+            Hlc::from_i64(-1),
+            Err(ClockError::Malformed("-1".to_owned()))
+        );
+    }
+
+    #[test]
     fn orders_by_time_then_counter() {
         assert!(Hlc::new(NOW, 9).unwrap() < Hlc::new(NOW + 1, 0).unwrap());
         assert!(Hlc::new(NOW, 1).unwrap() < Hlc::new(NOW, 2).unwrap());

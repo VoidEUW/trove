@@ -1,12 +1,11 @@
 //! Items and kinds on the real schema: adding, listing, the seed kinds and replay. Every test works
 //! in its own temporary folder under Cargo's scratch directory.
 
-use rusqlite::Connection;
 use trove_core::{Id, Item, ItemDraft, ItemError, KindLabel, seed_kinds};
 use trove_store::{Store, StoreError};
 
 mod common;
-use common::data_folder;
+use common::{count, data_folder, dump};
 
 const NOW: u64 = 1_760_000_000_000;
 
@@ -20,31 +19,6 @@ fn draft(name: &str, kind: Id, quantity: f64) -> ItemDraft {
 
 fn lamp_kind() -> Id {
     seed_kinds()[1].id
-}
-
-fn count(conn: &Connection, table: &str) -> i64 {
-    conn.query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| {
-        row.get(0)
-    })
-    .unwrap()
-}
-
-/// Everything about the projection tables, in a comparable form.
-fn dump(conn: &Connection) -> Vec<String> {
-    let mut rows = Vec::new();
-    for sql in [
-        "SELECT id || '|' || coalesce(label_key, '') || '|' || coalesce(name, '') || '|' || counting || '|' || container || '|' || archived FROM kinds ORDER BY id",
-        "SELECT id || '|' || name || '|' || kind_id || '|' || quantity || '|' || created_ms || '|' || updated_ms || '|' || archived FROM items ORDER BY created_ms, id",
-    ] {
-        let mut statement = conn.prepare(sql).unwrap();
-        rows.extend(
-            statement
-                .query_map([], |row| row.get::<_, String>(0))
-                .unwrap()
-                .map(Result::unwrap),
-        );
-    }
-    rows
 }
 
 #[test]

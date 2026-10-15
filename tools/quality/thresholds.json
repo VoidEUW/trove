@@ -1,7 +1,7 @@
 {
   "coverage": {
     "core": { "min": 90, "paths": ["crates/trove-core/src/"] },
-    "store": { "min": 80, "paths": ["crates/trove-store/src/"] },
+    "store": { "min": 90, "paths": ["crates/trove-store/src/"] },
     "commands": {
       "min": 80,
       "paths": [
