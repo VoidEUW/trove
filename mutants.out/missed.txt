@@ -1,4 +1,0 @@
-crates/trove-core/src/id.rs:32:58: replace | with ^ in Id::seed
-crates/trove-core/src/id.rs:32:48: replace | with ^ in Id::seed
-crates/trove-core/src/id.rs:32:36: replace | with ^ in Id::seed
-crates/trove-core/src/id.rs:32:29: replace << with >> in Id::seed
