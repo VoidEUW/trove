@@ -84,12 +84,24 @@ mod tests {
     }
 
     #[test]
-    fn seed_ids_are_fixed_version_7_ids_that_sort_first() {
+    fn seed_ids_are_fixed_and_differ_by_number() {
         assert_eq!(Id::seed(1), Id::seed(1));
         assert_ne!(Id::seed(1), Id::seed(2));
+    }
+
+    #[test]
+    fn seed_ids_are_version_7_ids() {
         assert_eq!(Id::seed(7).0.get_version_num(), 7);
         assert_eq!(Id::seed(7).to_string().parse::<Id>().unwrap(), Id::seed(7));
+    }
+
+    #[test]
+    fn seed_ids_sort_before_every_id_made_by_new() {
         assert!(Id::seed(u16::MAX) < Id::new(1));
+    }
+
+    #[test]
+    fn a_seed_id_has_a_stable_text_form() {
         assert_eq!(
             Id::seed(1).to_string(),
             "00000000-0000-7000-8000-000000000001"
