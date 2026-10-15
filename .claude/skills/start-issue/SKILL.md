@@ -50,7 +50,9 @@ Follow CONTRIBUTING.md. Stop and report to the user at any failed check; do not 
    if there is one. For UI work, read docs/themes/system.md and the active theme
    (docs/themes/README.md). For new strings, read docs/languages.md.
 5. **Report.** Give the branch name and the branch its pull request will target (`main`, or the
-   integration branch), the acceptance criteria as a checklist, and a plan of at most 5 steps.
+   integration branch), the acceptance criteria as a checklist, and a plan of at most 5 steps. The
+   plan lists the tests the work needs: the tier of each piece of code and the methods ADR 17 requires
+   for it (`/add-tests` writes them).
    If the issue needs a structural decision that no ADR covers, say so and suggest opening an `adr` issue
    rather than deciding it in code. Wait for the go-ahead before writing code.
 

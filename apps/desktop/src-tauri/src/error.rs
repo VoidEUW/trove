@@ -150,6 +150,25 @@ mod tests {
     }
 
     #[test]
+    fn item_errors_keep_their_own_code_and_text() {
+        let error = AppError::from(ItemError::NameRequired);
+        assert_eq!(error.code, ErrorCode::NameRequired);
+        assert_eq!(error.message, ItemError::NameRequired.to_string());
+
+        let invalid = ItemError::QuantityInvalid(-1.0);
+        let error = AppError::from(invalid);
+        assert_eq!(error.code, ErrorCode::QuantityInvalid);
+        assert_eq!(error.message, invalid.to_string());
+    }
+
+    #[test]
+    fn an_internal_error_carries_its_message() {
+        let error = AppError::internal("the task panicked");
+        assert_eq!(error.code, ErrorCode::Internal);
+        assert_eq!(error.message, "the task panicked");
+    }
+
+    #[test]
     fn core_errors_are_mapped_here_and_nowhere_else() {
         assert_eq!(
             AppError::from(PatchError::EmptyField).code,
