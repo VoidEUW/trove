@@ -4,6 +4,10 @@ Closes #
 
 <!-- One or two sentences. The title is the squash commit: `type(scope): summary`. -->
 
+## Try to break this
+
+<!-- The fragile spots of this change, the test that guards each, and what is not covered. Reviewers: reply with cases to add. Docs and tooling only: "Nothing to break". -->
+
 ## Checklist
 
 - [ ] CI is green (`npm run check`, `cargo fmt`, `cargo clippy`, `cargo test`, `cargo deny check`)

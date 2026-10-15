@@ -66,6 +66,6 @@ node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after e
 
 ## Skills
 
-`/start-issue <n>`, `/solve-adr <n>`, `/open-pr`, `/apply-theme [name]`, `/add-language <code>`,
-`/import-idea <file>`.
+`/start-issue <n>`, `/solve-adr <n>`, `/open-pr`, `/add-tests <n> "<what to test>"`,
+`/apply-theme [name]`, `/add-language <code>`, `/import-idea <file>`.
 They live in `.claude/skills/`.
