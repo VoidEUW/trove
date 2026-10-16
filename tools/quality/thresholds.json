@@ -1,0 +1,19 @@
+{
+  "coverage": {
+    "core": { "min": 90, "paths": ["crates/trove-core/src/"] },
+    "store": { "min": 90, "paths": ["crates/trove-store/src/"] },
+    "commands": {
+      "min": 80,
+      "paths": [
+        "apps/desktop/src-tauri/src/commands.rs",
+        "apps/desktop/src-tauri/src/error.rs",
+        "apps/desktop/src-tauri/src/events.rs",
+        "apps/desktop/src-tauri/src/items.rs"
+      ]
+    }
+  },
+  "mutation": {
+    "trove-core": { "min": 85 },
+    "trove-store": { "min": 85 }
+  }
+}

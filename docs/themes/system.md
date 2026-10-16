@@ -123,7 +123,7 @@ A slot's preset says *what* moves. Its token says *how long* and *on which curve
 |---|---|---|
 | `sidebar.collapse` | Sidebar | `width`, `none` |
 | `group.disclose` | Sidebar group | `height-fade`, `none` |
-| `entry.hover` | Sidebar entry | `tint`, `none` |
+| `entry.hover` | Sidebar entry, data table row | `tint`, `none` |
 | `entry.active` | Sidebar entry | `bar`, `fill` |
 | `tabs.move` | Tabs | `slide`, `fade`, `none` |
 | `button.hover` | Button, close button, chips | `lift`, `tint`, `none` |
@@ -275,6 +275,14 @@ Small marks: chips (toggle on and off), pills (status), keys (`kbd`) and avatars
 - Motion: `button.hover`, `button.press` (chips only)
 
 ### Feedback and overlays
+
+#### Data table · `ui/data-table`
+
+A sortable table of rows, such as the items list. Rows open on a click or Enter; a screen supplies the content of cells that are more than text.
+
+- Parts and states: header with sortable columns (unsorted, ascending, descending); rows (default, hover, selected, with an icon, a name and a short ID in the first column); cells of type text or mono, or content from the screen (chips, avatars, a condition meter); trailing overflow menu; horizontal scroll on narrow windows; empty (a `ui/state-page`)
+- Tokens: `--surface`, `--surface-raised`, `--line`, `--hover`, `--text`, `--text-muted`, `--text-faint`, `--accent`, `--font-body`, `--font-mono`
+- Motion: `entry.hover`
 
 #### Tooltip · `ui/tooltip`
 

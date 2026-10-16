@@ -13,11 +13,14 @@ Before any work, read the issue, `ARCHITECTURE.md` and the ADRs the touched sect
 cd apps/desktop && npm ci           # once
 npm run tauri dev                   # run the app (from apps/desktop)
 npm run check && npm run build      # frontend type-check and build (from apps/desktop; build is needed before cargo clippy)
+npm test                            # frontend unit, component and accessibility tests (from apps/desktop)
+npm run test:e2e                    # browser smoke tests; first `npx playwright install chromium` (from apps/desktop)
 cargo fmt --all                     # from the repo root
 cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
 cargo deny check                    # advisories, licenses, sources
 node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after editing its .md
+node tools/theme-check/check.mjs     # tokens.css matches the theme and src has no literal values
 ```
 
 ## Rules
@@ -45,19 +48,27 @@ node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after e
   is stored as typed and never translated.
 - **Secrets.** Never logged, never indexed, revealed only on demand.
 - **Decisions.** Do not make a structural decision in code. If no ADR covers it, stop and suggest an
-  `adr` issue. ADRs are the only design docs; don't create other planning, status or TODO files.
+  `adr` issue. ADRs are the only design docs; don't create other planning, status or TODO files. `docs/tests/`
+  holds reference notes on testing, not decisions.
 - **Issues.** Issues are the plan and guide the work step by step. An issue whose work has several
   distinct parts, or needs more than a few prompts, is split into sub-issues; an issue made of small
   steps that each fit in one prompt is not.
 - **Git.** One issue, one branch `<type>/<issue>-<short-name>`. Conventional Commits. PRs are
   squash-merged, and the PR title is the commit. Never push to `main`. Never merge a PR yourself.
+  A parent issue has an integration branch `<type>/<parent>-<short-name>`: its sub-issues are cut
+  from it and their PRs target it (`Part of #<parent>`, `Refs #<sub-issue>`). Close a sub-issue by
+  hand when its PR is merged; one final PR into `main` closes the top parent. An `adr` sub-issue
+  goes straight to `main`. See `CONTRIBUTING.md`.
 - **Rust.** Edition 2024. No `unsafe`. Clippy warnings fail CI. No `unwrap` outside tests; `expect`
   only at startup in the shell.
-- **Tests.** Core is pure and covered by unit tests; the solver also by property tests. Store tests
-  use a temporary `TROVE_HOME` and never touch real data.
+- **Tests.** Risk-tiered ([ADR 17](docs/adr/0017-risk-tiered-quality-bar.md)). The data path (core,
+  store, migrations, operation log) needs line coverage ≥ 90%, mutation score ≥ 85%, property tests and
+  a golden fixture per `op_version`; commands ≥ 80% with IPC tests; UI component and accessibility
+  tests. A bug fix starts with a failing test. Core is pure; store tests use a temporary folder and
+  never touch real data. Every PR body lists "Try to break this" cases. Use `/add-tests`.
 
 ## Skills
 
-`/start-issue <n>`, `/solve-adr <n>`, `/open-pr`, `/apply-theme [name]`, `/add-language <code>`,
-`/import-idea <file>`.
+`/start-issue <n>`, `/solve-adr <n>`, `/open-pr`, `/add-tests <n> "<what to test>"`,
+`/apply-theme [name]`, `/add-language <code>`, `/import-idea <file>`.
 They live in `.claude/skills/`.
