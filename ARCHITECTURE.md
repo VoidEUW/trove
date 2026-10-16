@@ -45,6 +45,8 @@ account and no network dependency. Dependencies point downwards only.
 | Desktop shell | `apps/desktop/src-tauri` (`trove-desktop`) | Tauri commands and events, error mapping, data-folder resolution | core, store | Contain domain logic |
 | UI | `apps/desktop/` | Screens, map scene, layout editor, components, translations | shell's commands | Read files or the database |
 | Decisions | `docs/adr/` | One file per decision | — | Hold plans |
+| Test notes | `docs/tests/` | How each tier is tested and measured, and the fragile places | — | Hold decisions or plans |
+| Tools | `tools/` | `quality` (coverage, mutation and ratchet checks), `theme-check` (token block and literal values), `theme-preview` (renders a theme's picture) | — | Ship in the app |
 | Component system | `docs/themes/system.md` | Token names, looks, motion presets, component catalogue | — | Differ between themes |
 | Theme | `docs/themes/heaven.md`, `heaven.png` | Spec (looks, tokens, type, icons, motion) and its rendered picture | system | Be edited in `tokens.css`; that file is generated from the spec |
 
@@ -74,7 +76,8 @@ account and no network dependency. Dependencies point downwards only.
 | `logs/` | Rotating log files |
 
 - Location: `~/.trove` (macOS, Linux), `%APPDATA%\trove` (Windows), overridden by `TROVE_HOME`. The
-  shell resolves it; tests always use a temporary `TROVE_HOME`.
+  shell resolves it and hands the path to the store, which never reads `TROVE_HOME`; tests pass a
+  temporary folder.
 - `rusqlite` with bundled SQLite, synchronous; one writer connection, read connections as needed,
   foreign keys on. Commands call the store on a blocking thread.
 - The operation log is authoritative. The entity tables are a projection: replaying all operations
@@ -141,7 +144,12 @@ account and no network dependency. Dependencies point downwards only.
 - SvelteKit with `adapter-static`, no SSR. Routes: `/` map, `/items`, `/items/[id]`,
   `/layout/[home]`, `/settings`. State in `.svelte.ts` modules per domain with runes.
 - Components follow the catalogue in `docs/themes/system.md` and live in
-  `apps/desktop/src/lib/components/`, named after their id.
+  `apps/desktop/src/lib/components/`, named after their id. Built so far: Button, Menu, TextField,
+  Select, Dialog, StatePage, Sidebar, SidebarEntry, Topbar and DataTable.
+- Built so far: the app shell (`routes/+layout.svelte`: sidebar, top bar, the screen's title and toolbar
+  set through `lib/shell.svelte.ts`) and the Items screen. `/` redirects to `/items` until the map exists.
+  Screens call `lib/api/` only: one wrapper per command, `CommandError` with a code that maps to a
+  message key in `en.json`, and listeners for `items_changed` and `layout_changed`.
 - Look: the Heaven theme as specified in `docs/themes/heaven.md`; `/apply-theme` generates
   `apps/desktop/src/lib/theme/tokens.css` from it. No literal colours, fonts, radii or durations in
   `apps/desktop/src`. `--accent` = selection, `--focus` = found and live, `--warning` = fragile,
@@ -168,8 +176,8 @@ account and no network dependency. Dependencies point downwards only.
   coverage ≥ 90%, mutation score ≥ 85%, property tests and a golden fixture per `op_version`; shell
   commands need ≥ 80% and IPC tests; the UI gets component, accessibility and browser smoke tests. CI
   holds the numbers, and every pull request lists "Try to break this" cases. Core is pure, store tests use
-  a temporary folder and replay is tested against the migrated projection. How each tier is tested lives
-  in `docs/tests/`.
+  a temporary folder and replay is tested against the migrated projection. How each tier is tested,
+  how to measure it and where it is fragile is in [`docs/tests/`](docs/tests/README.md).
 
 *Source:* [ADR 4](docs/adr/0004-typed-command-boundary.md),
 [ADR 5](docs/adr/0005-domain-model.md), [ADR 10](docs/adr/0010-operations-as-source-of-truth.md),
@@ -205,6 +213,8 @@ account and no network dependency. Dependencies point downwards only.
 |---|---|---|
 | Do ADRs 1–15 hold against the MVP prototype? | Every milestone after Foundation | Prototype review; ADRs that fail are removed or superseded |
 | Do people and ownership get their own colour? | Owners and the Shared mark | `adr` issue from the prototype import |
+| Small text in `--text-faint` (table header labels, short ids) is 3.7–4.3:1, below the 4.5:1 of WCAG AA. Darker token or another colour for that text? | Contrast test in `e2e/items.spec.ts` | Theme change in `docs/themes/heaven.md` (#100) |
+| Is a name made only of a zero-width space (U+200B) an acceptable item name? | `ItemDraft::validate` | Decided: refuse it. Fix and test in `trove-core` (#102) |
 | How does a second device get the secrets' data key (ADR 12)? | Sync of licence keys | Spec issue, before sync |
 | Walls fixed low or cut away by camera angle; HTML labels or SDF text (ADR 13)? | Map scene | Spike in the 3D map phase |
 | Lifecycle states (lent, sold, given away) and purchase data | Domain model extension | New ADR when the feature is planned |

@@ -20,6 +20,7 @@ cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
 cargo deny check                    # advisories, licenses, sources
 node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after editing its .md
+node tools/theme-check/check.mjs     # tokens.css matches the theme and src has no literal values
 ```
 
 ## Rules

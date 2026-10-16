@@ -157,6 +157,14 @@ jobs:
           name: playwright-traces
           path: apps/desktop/test-results
 
+  # tokens.css is the active theme's token block, and src has no literal colour, font, radius or duration (ADR 14).
+  theme:
+    name: theme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node tools/theme-check/check.mjs
+
   deny:
     name: deny
     runs-on: ubuntu-latest
