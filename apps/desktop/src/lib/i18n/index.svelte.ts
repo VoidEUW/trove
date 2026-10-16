@@ -38,3 +38,11 @@ export function t(key: MessageKey, params: Record<string, string | number> = {})
 	const text = locales[current]?.[key] ?? en[key];
 	return text.replace(/\{(\w+)\}/g, (_, name: string) => String(params[name] ?? `{${name}}`));
 }
+
+/**
+ * Looks up a key that comes from stored data, not from code: a kind that ships with Trove stores its
+ * message key (ADR 15). A key with no text is shown as it is, so a missing translation is visible.
+ */
+export function tStored(key: string): string {
+	return key in en ? t(key as MessageKey) : key;
+}

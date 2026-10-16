@@ -22,3 +22,10 @@ vite.config.*.timestamp-*
 .DS_Store
 .idea/
 .claude/settings.local.json
+# cargo-mutants output (ADR 17)
+/mutants.out*
+
+# Frontend test output
+/apps/desktop/coverage/
+/apps/desktop/test-results/
+/apps/desktop/playwright-report/

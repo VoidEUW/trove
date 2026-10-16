@@ -1,12 +1,21 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { svelteTesting } from '@testing-library/svelte/vite';
 // @ts-expect-error type error without @types/node package
 import process from 'node:process';
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(() => ({
-	plugins: [sveltekit()],
+	plugins: [sveltekit(), svelteTesting()],
+
+	// Unit and component tests (ADR 14, ADR 17). The browser smoke test is separate: see playwright.config.ts.
+	test: {
+		environment: 'jsdom',
+		include: ['src/**/*.test.ts'],
+		setupFiles: ['src/test/setup.ts'],
+		coverage: { provider: /** @type {const} */ ('v8'), include: ['src/lib/**'], exclude: ['src/lib/bindings/**'] }
+	},
 
 	// Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
 	//

@@ -16,7 +16,7 @@ The Markdown is authoritative. The picture is generated from it.
 
 ## Active theme
 
-**`default`** ([spec](default.md) · [picture](default.png))
+**`heaven`** ([spec](heaven.md) · [picture](heaven.png))
 
 The app takes every colour, font, radius and duration from the active theme. No component contains
 a literal value for any of these.
@@ -47,11 +47,11 @@ A theme file has these sections, in this order. Tools parse them, so keep the he
    delays (tooltip intent, toast duration) in prose.
 8. Optional `## Notes`: anything a tool or person should know, such as an accepted contrast exception.
 
-[default.md](default.md) is the reference.
+[heaven.md](heaven.md) is the reference.
 
 ## Adding or switching a theme
 
-1. Create `<name>.md` by hand (copy `default.md`) or with a theme generator. See
+1. Create `<name>.md` by hand (copy `heaven.md`) or with a theme generator. See
    [docs/briefs/theme-generator.md](../briefs/theme-generator.md).
 2. Render the picture: `node tools/theme-preview/render.mjs <name>`. It needs Chrome or Chromium and
    writes `<name>.png` next to the `.md`. Use `--html <file>` to open the preview in a browser instead.

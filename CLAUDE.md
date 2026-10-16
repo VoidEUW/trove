@@ -13,11 +13,14 @@ Before any work, read the issue, `ARCHITECTURE.md` and the ADRs the touched sect
 cd apps/desktop && npm ci           # once
 npm run tauri dev                   # run the app (from apps/desktop)
 npm run check && npm run build      # frontend type-check and build (from apps/desktop; build is needed before cargo clippy)
+npm test                            # frontend unit, component and accessibility tests (from apps/desktop)
+npm run test:e2e                    # browser smoke tests; first `npx playwright install chromium` (from apps/desktop)
 cargo fmt --all                     # from the repo root
 cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace
 cargo deny check                    # advisories, licenses, sources
 node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after editing its .md
+node tools/theme-check/check.mjs     # tokens.css matches the theme and src has no literal values
 ```
 
 ## Rules
@@ -66,6 +69,6 @@ node tools/theme-preview/render.mjs <theme>   # re-render a theme's .png after e
 
 ## Skills
 
-`/start-issue <n>`, `/solve-adr <n>`, `/open-pr`, `/apply-theme [name]`, `/add-language <code>`,
-`/import-idea <file>`.
+`/start-issue <n>`, `/solve-adr <n>`, `/open-pr`, `/add-tests <n> "<what to test>"`,
+`/apply-theme [name]`, `/add-language <code>`, `/import-idea <file>`.
 They live in `.claude/skills/`.

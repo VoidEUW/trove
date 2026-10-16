@@ -1,0 +1,13 @@
+# Mutation testing (ADR 17). A mutant that no test can catch is skipped here, with the reason.
+# Format: exclude_re = ["<regex matching the mutant's name>"]
+exclude_re = [
+    # Id::seed builds the id from constants. The timestamp part is 0 << 80, which is 0 whichever way it
+    # shifts, and the version, variant and number sit in different bits, so | and ^ give the same id.
+    'replace (<< with >>|\| with \^) in Id::seed',
+    # OpenFlags are distinct bits, so | and ^ give the same flags.
+    'replace \| with \^ in Store::reader',
+    # The bundled SQLite already defaults to foreign_keys ON and rusqlite to a 5 s busy timeout, so
+    # configure changes nothing observable today. It keeps the two settings explicit against a change
+    # of those defaults.
+    'replace configure -> Result<\(\), StoreError> with Ok\(\(\)\)',
+]
