@@ -39,11 +39,23 @@ pub struct NewItem {
     pub quantity: u32,
 }
 
+/// Characters that take no space and show nothing, so a name made only of them looks empty: the soft
+/// hyphen, the zero-width space, non-joiner and joiner, the word joiner and the byte order mark.
+/// Directional marks are not listed: they change how text is shown and belong in right-to-left names.
+const INVISIBLE: [char; 6] = [
+    '\u{ad}', '\u{200b}', '\u{200c}', '\u{200d}', '\u{2060}', '\u{feff}',
+];
+
+fn is_visible(c: char) -> bool {
+    !(c.is_whitespace() || c.is_control() || INVISIBLE.contains(&c))
+}
+
 impl ItemDraft {
-    /// The name is trimmed and must not be empty; the quantity is a whole number from 1.
+    /// The name is trimmed of whitespace and must have a visible character in it; the quantity is a
+    /// whole number from 1.
     pub fn validate(self) -> Result<NewItem, ItemError> {
         let name = self.name.trim();
-        if name.is_empty() {
+        if !name.chars().any(is_visible) {
             return Err(ItemError::NameRequired);
         }
         let quantity = self.quantity;
@@ -121,6 +133,42 @@ mod tests {
                 Err(ItemError::NameRequired),
                 "{name:?}"
             );
+        }
+    }
+
+    #[test]
+    fn a_name_with_nothing_visible_in_it_is_refused() {
+        for name in [
+            "\u{200b}",
+            "\u{200c}\u{200d}",
+            "\u{2060}",
+            "\u{feff}",
+            "\u{ad}",
+            " \u{200b} \t\u{feff}\n",
+            "\u{7f}\u{0}",
+        ] {
+            assert_eq!(
+                draft(name, 1.0).validate(),
+                Err(ItemError::NameRequired),
+                "{name:?}"
+            );
+        }
+    }
+
+    #[test]
+    fn invisible_characters_around_a_visible_one_are_kept_and_only_whitespace_is_trimmed() {
+        let item = draft("  \u{200b}Lamp\u{200b} \n", 1.0).validate().unwrap();
+
+        assert_eq!(item.name, "\u{200b}Lamp\u{200b}");
+        let inner = draft("Floor\u{200d}lamp", 1.0).validate().unwrap();
+        assert_eq!(inner.name, "Floor\u{200d}lamp");
+    }
+
+    #[test]
+    fn text_that_looks_empty_but_is_not_invisible_is_accepted() {
+        // Directional marks change how text is shown; they are not on the invisible list.
+        for name in ["\u{200e}", "\u{202e}x", "\u{3000}\u{3042}"] {
+            assert!(draft(name, 1.0).validate().is_ok(), "{name:?}");
         }
     }
 

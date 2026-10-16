@@ -211,6 +211,33 @@ fn quantity() -> impl Strategy<Value = f64> {
     ]
 }
 
+/// One character of a name, and whether a person can see it. Whitespace and the zero-width and other
+/// invisible characters are not visible; letters, marks and directional marks are.
+fn name_char() -> impl Strategy<Value = (char, bool)> {
+    prop_oneof![
+        prop::sample::select(vec![
+            ' ', '\t', '\n', '\r', '\u{a0}', '\u{2003}', '\u{3000}'
+        ])
+        .prop_map(|c| (c, false)),
+        prop::sample::select(vec![
+            '\u{ad}', '\u{200b}', '\u{200c}', '\u{200d}', '\u{2060}', '\u{feff}'
+        ])
+        .prop_map(|c| (c, false)),
+        prop::sample::select(vec!['\u{0}', '\u{7}', '\u{7f}', '\u{85}']).prop_map(|c| (c, false)),
+        prop::sample::select(vec![
+            'a',
+            'Z',
+            '7',
+            '\u{e9}',
+            '\u{6f22}',
+            '\u{1f389}',
+            '\u{200e}',
+            '-'
+        ])
+        .prop_map(|c| (c, true)),
+    ]
+}
+
 fn draft(name: String, quantity: f64) -> ItemDraft {
     ItemDraft {
         name,
@@ -239,17 +266,19 @@ proptest! {
     }
 
     #[test]
-    fn a_name_is_accepted_when_something_is_left_after_trimming_and_is_stored_trimmed(
-        name in prop_oneof![any::<String>(), "[ \t\r\n\u{a0}\u{2003}a-z]{0,10}"],
+    fn a_name_is_accepted_exactly_when_it_has_a_visible_character_and_is_stored_trimmed(
+        chars in prop::collection::vec(name_char(), 0..12),
     ) {
+        let name: String = chars.iter().map(|(c, _)| c).collect();
+        let has_visible = chars.iter().any(|(_, visible)| *visible);
         let result = draft(name.clone(), 1.0).validate();
-        if name.trim().is_empty() {
-            prop_assert_eq!(result, Err(ItemError::NameRequired));
-        } else {
+        if has_visible {
             let item = result.unwrap();
             prop_assert_eq!(&item.name, name.trim());
             // Validating what validation returned changes nothing.
             prop_assert_eq!(draft(item.name.clone(), 1.0).validate().unwrap(), item);
+        } else {
+            prop_assert_eq!(result, Err(ItemError::NameRequired));
         }
     }
 }
