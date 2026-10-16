@@ -126,8 +126,9 @@ account and no network dependency. Dependencies point downwards only.
 - Projections: each entity type has a `Projection` handler in `trove-store` that applies its operations
   inside the transaction that appends them, and empties its tables for a replay. `kind` and `item` are
   the first two. The eleven seed kinds have fixed ids and are inserted by a migration; a replay puts
-  them back. Validation (a name is required, a quantity is a whole number from 1) lives in
-  `trove-core` and runs before anything is written.
+  them back. Validation lives in `trove-core` and runs before anything is written: a name needs a
+  visible character (whitespace, control and zero-width characters alone are refused) and a quantity
+  is a whole number from 1.
 - Snapshots at an HLC watermark bound replay time and record the `op_version` they were made with.
 - Sync (not built yet): each device appends its operations to
   `<sync folder>/ops/<device_id>/<seq>.jsonl`; others import them idempotently; per field the highest
@@ -214,7 +215,6 @@ account and no network dependency. Dependencies point downwards only.
 | Do ADRs 1–15 hold against the MVP prototype? | Every milestone after Foundation | Prototype review; ADRs that fail are removed or superseded |
 | Do people and ownership get their own colour? | Owners and the Shared mark | `adr` issue from the prototype import |
 | Small text in `--text-faint` (table header labels, short ids) is 3.7–4.3:1, below the 4.5:1 of WCAG AA. Darker token or another colour for that text? | Contrast test in `e2e/items.spec.ts` | Theme change in `docs/themes/heaven.md` (#100) |
-| Is a name made only of a zero-width space (U+200B) an acceptable item name? | `ItemDraft::validate` | Decided: refuse it. Fix and test in `trove-core` (#102) |
 | How does a second device get the secrets' data key (ADR 12)? | Sync of licence keys | Spec issue, before sync |
 | Walls fixed low or cut away by camera angle; HTML labels or SDF text (ADR 13)? | Map scene | Spike in the 3D map phase |
 | Lifecycle states (lent, sold, given away) and purchase data | Domain model extension | New ADR when the feature is planned |
