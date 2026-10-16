@@ -1,0 +1,36 @@
+name: Mutation
+
+# The full mutation run of ADR 17. Pull requests only mutate the lines they change (see ci.yml).
+on:
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+jobs:
+  mutation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-mutants
+      - name: Mutate everything
+        run: |
+          for crate in trove-core trove-store; do
+            # Exit codes 2 and 3 only say that mutants were missed or timed out; the score is checked below.
+            code=0
+            cargo mutants -p "$crate" -o "mutants-$crate" || code=$?
+            case $code in 0|2|3) ;; *) exit "$code" ;; esac
+          done
+      - name: Mutation thresholds
+        run: |
+          for crate in trove-core trove-store; do
+            node tools/quality/check.mjs mutation "$crate" "mutants-$crate/mutants.out/outcomes.json"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutants
+          path: mutants-*/mutants.out

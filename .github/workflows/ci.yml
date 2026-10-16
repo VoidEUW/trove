@@ -33,9 +33,13 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@stable
         with:
-          components: rustfmt, clippy
+          components: rustfmt, clippy, llvm-tools-preview
 
       - uses: Swatinem/rust-cache@v2
+
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-llvm-cov
 
       # The frontend is built first: the Tauri crate embeds apps/desktop/build at compile time.
       - name: Frontend
@@ -43,6 +47,7 @@ jobs:
         run: |
           npm ci
           npm run check
+          npm test
           npm run build
 
       - name: Format
@@ -51,8 +56,12 @@ jobs:
       - name: Clippy
         run: cargo clippy --workspace --all-targets -- -D warnings
 
-      - name: Test
-        run: cargo test --workspace
+      # Runs the tests and measures line coverage; the thresholds are in tools/quality/thresholds.json (ADR 17).
+      - name: Test and coverage
+        run: cargo llvm-cov --workspace --json --output-path coverage.json
+
+      - name: Coverage thresholds
+        run: node tools/quality/check.mjs coverage coverage.json
 
       # `cargo test` writes the TypeScript bindings (ADR 4); a difference means they were not regenerated.
       - name: Bindings are up to date
@@ -73,6 +82,88 @@ jobs:
             echo "$offenders"
             exit 1
           fi
+
+  # Thresholds can be raised but not lowered: compare with the branch the pull request targets.
+  ratchet:
+    name: ratchet
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: node tools/quality/check.mjs ratchet origin/${{ github.base_ref }}
+
+  # Reports only for now: it is not a required check (ADR 17). #92 closes the gaps it finds, then it becomes required.
+  mutation:
+    name: mutation
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-mutants
+      - name: Mutate the changed lines
+        run: |
+          git diff origin/${{ github.base_ref }}...HEAD > pr.diff
+          for crate in trove-core trove-store; do
+            # Exit codes 2 and 3 only say that mutants were missed or timed out; the score is checked below.
+            code=0
+            cargo mutants --in-diff pr.diff -p "$crate" -o "mutants-$crate" || code=$?
+            case $code in 0|2|3) ;; *) exit "$code" ;; esac
+          done
+          for crate in trove-core trove-store; do
+            # cargo-mutants writes nothing when the diff changes no Rust source.
+            if [ -f "mutants-$crate/mutants.out/outcomes.json" ]; then
+              node tools/quality/check.mjs mutation "$crate" "mutants-$crate/mutants.out/outcomes.json"
+            else
+              echo "$crate: no mutants in this diff"
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutants
+          path: mutants-*/mutants.out
+
+  # The built UI in Chromium against a stand-in for the Rust side, plus an accessibility check (ADR 17, tier 3).
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - name: Install
+        working-directory: apps/desktop
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Smoke tests
+        working-directory: apps/desktop
+        run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-traces
+          path: apps/desktop/test-results
+
+  # tokens.css is the active theme's token block, and src has no literal colour, font, radius or duration (ADR 14).
+  theme:
+    name: theme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node tools/theme-check/check.mjs
 
   deny:
     name: deny
