@@ -8,7 +8,7 @@ browser tests are in `apps/desktop/e2e/`.
 | Method | Where | What it checks |
 |---|---|---|
 | Unit tests (Vitest) | `src/lib/api/*.test.ts`, `src/lib/i18n/i18n.test.ts` | The API wrappers (with a mocked `invoke`), error mapping, `t()` and locale matching. `fast-check` for rules that hold for any value |
-| Component tests (Testing Library) | `src/lib/components/DataTable.test.ts` | Roles, `aria-*`, keyboard and click behaviour, snippets |
+| Component tests (Testing Library) | `src/lib/components/*.test.ts`, one file per component | Roles, `aria-*`, keyboard, pointer and click behaviour, snippets. `src/test/SidebarHarness.svelte` renders a sidebar with entries, because an entry reads its sidebar's state from context |
 | Screen tests | `src/routes/items/page.test.ts` | The Items screen with the API mocked: list, empty and error states, refetch on `items_changed`, the add form |
 | Accessibility, jsdom | `src/test/a11y.test.ts`, `src/test/axe.ts` | `axe-core` over each component and screen. No layout, so colour contrast is off here |
 | Browser smoke | `e2e/items.spec.ts` | The built app in Chromium against `e2e/tauri-mock.js` (a stand-in for the Rust side): open, add, validate, sort, and `axe` including contrast in both themes |
@@ -25,6 +25,9 @@ browser tests are in `apps/desktop/e2e/`.
 
 ## Not covered
 
-Menu, Select, Sidebar, SidebarEntry, Topbar, Button, TextField, Dialog and StatePage have the
-accessibility check but no interaction tests of their own (Menu is at 40% of lines, Sidebar at 56%,
-Select at 65%). The real window is checked by hand: WebDriver does not run against macOS webviews.
+- jsdom has no layout and no focus trap for `<dialog>`, so dragging the sidebar edge is tested with
+  synthetic pointer events (the clamped width, not real pixels) and Dialog's focus handling is the
+  browser's own. A real browser would show both.
+- Select and Menu are custom (a button and a menu), not the browser's `<select>`; their keyboard handling
+  is tested. Menu has no type-ahead.
+- The real window is checked by hand: WebDriver does not run against macOS webviews.
