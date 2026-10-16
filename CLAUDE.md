@@ -13,6 +13,8 @@ Before any work, read the issue, `ARCHITECTURE.md` and the ADRs the touched sect
 cd apps/desktop && npm ci           # once
 npm run tauri dev                   # run the app (from apps/desktop)
 npm run check && npm run build      # frontend type-check and build (from apps/desktop; build is needed before cargo clippy)
+npm test                            # frontend unit, component and accessibility tests (from apps/desktop)
+npm run test:e2e                    # browser smoke tests; first `npx playwright install chromium` (from apps/desktop)
 cargo fmt --all                     # from the repo root
 cargo clippy --workspace --all-targets -- -D warnings
 cargo test --workspace

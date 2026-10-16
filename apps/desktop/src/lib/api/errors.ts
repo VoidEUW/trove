@@ -40,11 +40,20 @@ function isAppError(value: unknown): value is AppError {
 	);
 }
 
+/** `String(value)` throws for an object without a prototype, and an error must never throw. */
+function describe(value: unknown): string {
+	try {
+		return String(value);
+	} catch {
+		return 'unknown error';
+	}
+}
+
 /** Anything that is not an `AppError` from Rust (a missing runtime, a bug) becomes `internal`. */
 export function toCommandError(error: unknown): CommandError {
 	if (error instanceof CommandError) return error;
 	if (isAppError(error)) return new CommandError(error.code, error.message);
-	return new CommandError('internal', error instanceof Error ? error.message : String(error));
+	return new CommandError('internal', error instanceof Error ? error.message : describe(error));
 }
 
 /** The text to show the user for a failed command, in their language. */
