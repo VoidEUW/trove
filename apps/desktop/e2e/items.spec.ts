@@ -133,11 +133,9 @@ for (const theme of ['light', 'dark'] as const) {
 		expect(await violations(page, { contrast: false })).toEqual([]);
 	});
 
-	// Known finding: the table's small header labels and short ids use `--text-faint`, which is below the
-	// 4.5:1 that WCAG AA asks of small text (docs/themes/heaven.md, Notes). `test.fail` keeps this green while
-	// it is true and goes red once the tokens or the table change, which is the cue to remove it.
+	// With a row selected this also proves the text on the `--accent-soft` selected fill is readable:
+	// that fill is the theme's quietest surface for text in the light theme (4.55:1).
 	test(`table text meets contrast in the ${theme} theme`, async ({ page }) => {
-		test.fail();
 		await useTheme(page, theme);
 		await selectNewItem(page);
 		expect(await violations(page)).toEqual([]);

@@ -69,10 +69,13 @@ To grow the system, see [Extending](#extending-the-system). To replace it, see [
 
 ### Contrast
 
-Measured against `--ground` and `--surface` in both modes:
+Measured against `--ground`, `--surface`, `--surface-raised` and a `--hover`-tinted fill in both
+modes:
 
 - `--text`, `--text-muted`: at least 4.5:1.
-- `--text-faint`: at least 3:1.
+- `--text-faint`: at least 3:1, and only where WCAG asks for no more — placeholders, hints, and
+  disabled or inactive controls, which it exempts. It is never for text that carries meaning: a
+  column label, a short id or a count is content, so it takes `--text-muted`.
 - Every `--on-*` on its colour: at least 4.5:1.
 - `--accent`, `--focus`, `--danger` as text or icons: at least 3:1.
 
@@ -280,8 +283,8 @@ Small marks: chips (toggle on and off), pills (status), keys (`kbd`) and avatars
 
 A sortable table of rows, such as the items list. Rows open on a click or Enter; a screen supplies the content of cells that are more than text.
 
-- Parts and states: header with sortable columns (unsorted, ascending, descending); rows (default, hover, selected, with an icon, a name and a short ID in the first column); cells of type text or mono, or content from the screen (chips, avatars, a condition meter); trailing overflow menu; horizontal scroll on narrow windows; empty (a `ui/state-page`)
-- Tokens: `--surface`, `--surface-raised`, `--line`, `--hover`, `--text`, `--text-muted`, `--text-faint`, `--accent`, `--font-body`, `--font-mono`
+- Parts and states: header with sortable columns (unsorted, ascending, descending); rows (default, hover, selected, with an icon, a name and a short ID in the first column); cells of type text or mono, or content from the screen (chips, avatars, a condition meter); trailing overflow menu; horizontal scroll on narrow windows; empty (a `ui/state-page`). The selected row is an `--accent-soft` fill with an `--accent` bar on its leading edge, and must read louder than the hover tint
+- Tokens: `--surface`, `--surface-raised`, `--line`, `--hover`, `--text`, `--text-muted`, `--accent`, `--accent-soft`, `--font-body`, `--font-mono`
 - Motion: `entry.hover`
 
 #### Tooltip · `ui/tooltip`

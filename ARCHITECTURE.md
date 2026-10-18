@@ -214,7 +214,6 @@ account and no network dependency. Dependencies point downwards only.
 |---|---|---|
 | Do ADRs 1–15 hold against the MVP prototype? | Every milestone after Foundation | Prototype review; ADRs that fail are removed or superseded |
 | Do people and ownership get their own colour? | Owners and the Shared mark | `adr` issue from the prototype import |
-| Small text in `--text-faint` (table header labels, short ids) is 3.7–4.3:1, below the 4.5:1 of WCAG AA. Darker token or another colour for that text? | Contrast test in `e2e/items.spec.ts` | Theme change in `docs/themes/heaven.md` (#100) |
 | How does a second device get the secrets' data key (ADR 12)? | Sync of licence keys | Spec issue, before sync |
 | Walls fixed low or cut away by camera angle; HTML labels or SDF text (ADR 13)? | Map scene | Spike in the 3D map phase |
 | Lifecycle states (lent, sold, given away) and purchase data | Domain model extension | New ADR when the feature is planned |
