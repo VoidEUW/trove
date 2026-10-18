@@ -3,17 +3,17 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { expectAccessible } from '../../test/axe';
 
-vi.mock('$lib/api', async (importOriginal) => ({
-	...(await importOriginal<typeof import('$lib/api')>()),
+vi.mock('#lib/api/index.js', async (importOriginal) => ({
+	...(await importOriginal<typeof import('#lib/api/index.js')>()),
 	listItems: vi.fn(),
 	listKinds: vi.fn(),
 	addItem: vi.fn(),
 	onItemsChanged: vi.fn()
 }));
 
-import { CommandError, addItem, listItems, listKinds, onItemsChanged } from '$lib/api';
-import type { ItemView, KindView } from '$lib/api';
-import en from '$lib/i18n/en.json';
+import { CommandError, addItem, listItems, listKinds, onItemsChanged } from '#lib/api/index.js';
+import type { ItemView, KindView } from '#lib/api/index.js';
+import en from '#lib/i18n/en.json';
 import Page from './+page.svelte';
 
 const tools: KindView = {

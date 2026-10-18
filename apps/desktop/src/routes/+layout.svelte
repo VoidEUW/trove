@@ -2,11 +2,11 @@
 	import '../app.css';
 	import { page } from '$app/state';
 	import Package from '@lucide/svelte/icons/package';
-	import Sidebar from '$lib/components/Sidebar.svelte';
-	import SidebarEntry from '$lib/components/SidebarEntry.svelte';
-	import Topbar from '$lib/components/Topbar.svelte';
-	import { t } from '$lib/i18n/index.svelte';
-	import { shell } from '$lib/shell.svelte';
+	import Sidebar from '#lib/components/Sidebar.svelte';
+	import SidebarEntry from '#lib/components/SidebarEntry.svelte';
+	import Topbar from '#lib/components/Topbar.svelte';
+	import { t } from '#lib/i18n/index.svelte.js';
+	import { shell } from '#lib/shell.svelte.js';
 
 	let { children } = $props();
 

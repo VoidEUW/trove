@@ -1,16 +1,16 @@
 import { render } from '@testing-library/svelte';
 import { createRawSnippet } from 'svelte';
 import { describe, expect, it } from 'vitest';
-import Button from '$lib/components/Button.svelte';
-import DataTable from '$lib/components/DataTable.svelte';
-import Dialog from '$lib/components/Dialog.svelte';
-import Menu from '$lib/components/Menu.svelte';
-import Select from '$lib/components/Select.svelte';
-import Sidebar from '$lib/components/Sidebar.svelte';
-import SidebarEntry from '$lib/components/SidebarEntry.svelte';
-import StatePage from '$lib/components/StatePage.svelte';
-import TextField from '$lib/components/TextField.svelte';
-import Topbar from '$lib/components/Topbar.svelte';
+import Button from '#lib/components/Button.svelte';
+import DataTable from '#lib/components/DataTable.svelte';
+import Dialog from '#lib/components/Dialog.svelte';
+import Menu from '#lib/components/Menu.svelte';
+import Select from '#lib/components/Select.svelte';
+import Sidebar from '#lib/components/Sidebar.svelte';
+import SidebarEntry from '#lib/components/SidebarEntry.svelte';
+import StatePage from '#lib/components/StatePage.svelte';
+import TextField from '#lib/components/TextField.svelte';
+import Topbar from '#lib/components/Topbar.svelte';
 import { expectAccessible } from './axe';
 
 const text = (content: string) => createRawSnippet(() => ({ render: () => `<span>${content}</span>` }));

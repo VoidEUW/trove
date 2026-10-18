@@ -1,7 +1,7 @@
 <!-- A sidebar with entries, because an entry reads whether the sidebar is collapsed from its context. -->
 <script lang="ts">
-	import Sidebar from '$lib/components/Sidebar.svelte';
-	import SidebarEntry from '$lib/components/SidebarEntry.svelte';
+	import Sidebar from '#lib/components/Sidebar.svelte';
+	import SidebarEntry from '#lib/components/SidebarEntry.svelte';
 
 	interface Props {
 		collapsed?: boolean;

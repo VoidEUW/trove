@@ -16,6 +16,15 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+    # adapter-static 4 requires SvelteKit 3, so raising them apart leaves two pull requests that
+    # can never merge. They are raised together instead (#108).
+    groups:
+      sveltekit:
+        applies-to: version-updates
+        patterns:
+          - "@sveltejs/kit"
+          - "@sveltejs/adapter-static"
+          - "@sveltejs/vite-plugin-svelte"
   - package-ecosystem: github-actions
     directory: /
     schedule:
