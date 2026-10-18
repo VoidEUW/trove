@@ -186,6 +186,18 @@ Tooltips show after a 250ms hover intent. Toasts sit top-centre and stay for 3s.
   `--accent` `#a87400` → `#8f6400` (text on a filled accent was 4.1:1). Every check now passes in
   both modes; the lowest are light `--text-faint` at 3.5:1 on `--surface` and light `--accent` at
   4.1:1 on `--surface`.
+- `--text-faint` stays this faint because system.md only lets it where WCAG exempts the contrast
+  requirement: placeholders, hints, and disabled or inactive controls. It cannot carry content —
+  at 3.5:1 in the light theme it is below the 4.5:1 that small text needs. The data table therefore
+  takes its column labels and short ids from `--text-muted` instead, the lowest of which is 4.8:1 on
+  a hovered row and 5.4:1 on a selected one. Retuning `--text-faint` to reach 4.5:1 was measured and
+  rejected: in the light theme it lands on `#526173`, 1.06:1 from `--text-muted`, which would leave
+  no visible gap in the text hierarchy.
+- A selected data-table row is an `--accent-soft` fill. `--surface-raised` was too quiet for it: in
+  the light theme it sits 1.03:1 against `--surface`, quieter than the 1.10:1 hover tint, so the
+  selection was invisible. `--accent-soft` measures 1.16:1 there and 1.43:1 in the dark theme. Two
+  consequences to check in the rendered picture: in the light theme the tint composites to a murky
+  `#ced6d7`, and `--text-muted` on it is 4.55:1 — passing, but with almost nothing to spare.
 - Heaven had no success or warning colour. The ones added sit apart from `--accent` by hue in dark
   and by hue and lightness in light, but light `--warning` and `--accent` are both dark ambers:
   compare them in the rendered picture before applying.

@@ -199,7 +199,8 @@
 		text-align: start;
 		text-transform: uppercase;
 		white-space: nowrap;
-		color: var(--text-faint);
+		/* A column label is content, so it needs 4.5:1 like any other small text. */
+		color: var(--text-muted);
 	}
 
 	th.sorted {
@@ -261,8 +262,10 @@
 		background: var(--hover);
 	}
 
+	/* Selection is the loudest row state: in the light theme `--surface-raised` (1.03:1 against
+	   `--surface`) was quieter than the hover tint, so a selected row read as unselected. */
 	tbody tr.selected td {
-		background: var(--surface-raised);
+		background: var(--accent-soft);
 	}
 
 	tbody tr.selected td:first-child {
@@ -294,7 +297,8 @@
 	small {
 		font-family: var(--font-mono);
 		font-size: calc(var(--ui-size) * 0.8);
-		color: var(--text-faint);
+		/* The short id is content too, so it takes `--text-muted`, not `--text-faint`. */
+		color: var(--text-muted);
 	}
 
 	tr:focus-visible,

@@ -143,21 +143,20 @@
 
 			.dtable { overflow-x: auto; }
 			.dtable table { width: 100%; border-collapse: collapse; }
-			.dtable th { padding: calc(var(--space) * 2.5) calc(var(--space) * 3); text-align: left; font: 600 10.5px/1 var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-faint); border-bottom: var(--border-width) solid var(--line); white-space: nowrap; }
+			.dtable th { padding: calc(var(--space) * 2.5) calc(var(--space) * 3); text-align: left; font: 600 10.5px/1 var(--font-ui); letter-spacing: 0.09em; text-transform: uppercase; color: var(--text-muted); border-bottom: var(--border-width) solid var(--line); white-space: nowrap; }
 			.dtable th.sorted { color: var(--text); }
 			.dtable th .dir { display: inline-flex; vertical-align: middle; margin-left: calc(var(--space) * 1); color: var(--accent); }
 			.dtable td { padding: calc(var(--space) * 2.5) calc(var(--space) * 3); border-bottom: var(--border-width) solid var(--line); color: var(--text-muted); }
 			.dtable tr:last-child td { border-bottom: 0; }
 			.dtable td.name { color: var(--text); font-family: var(--font-body); font-size: var(--body-size); }
 			.dtable td.name .cell { display: flex; align-items: center; gap: calc(var(--space) * 2); }
-			.dtable td.name small { font: 11px var(--font-mono); color: var(--text-faint); }
-			.dtable td.end { width: 1%; text-align: right; color: var(--text-faint); }
+			.dtable td.name small { font: 11px var(--font-mono); color: var(--text-muted); }
+			.dtable td.end { width: 1%; text-align: right; }
 			.dtable td.name .cell { white-space: nowrap; }
 			.dtable tr.hover td { background: var(--hover); }
-			.dtable tr.selected td { background: var(--surface-raised); }
+			.dtable tr.selected td { background: var(--accent-soft); }
 			.dtable tr.selected td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
 			.dtable.look-open { border-radius: var(--radius-sm); }
-			.dtable.look-open tr.selected td { background: var(--accent-soft); }
 			.avatars { display: inline-flex; }
 			.avatars .avatar + .avatar { margin-left: -6px; box-shadow: 0 0 0 2px var(--surface); }
 
