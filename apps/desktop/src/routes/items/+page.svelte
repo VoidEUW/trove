@@ -11,15 +11,15 @@
 		toCommandError,
 		type ItemView,
 		type KindView
-	} from '$lib/api';
-	import Button from '$lib/components/Button.svelte';
-	import DataTable, { type Column, type Sort } from '$lib/components/DataTable.svelte';
-	import Dialog from '$lib/components/Dialog.svelte';
-	import Select from '$lib/components/Select.svelte';
-	import StatePage from '$lib/components/StatePage.svelte';
-	import TextField from '$lib/components/TextField.svelte';
-	import { t } from '$lib/i18n/index.svelte';
-	import { shell } from '$lib/shell.svelte';
+	} from '#lib/api/index.js';
+	import Button from '#lib/components/Button.svelte';
+	import DataTable, { type Column, type Sort } from '#lib/components/DataTable.svelte';
+	import Dialog from '#lib/components/Dialog.svelte';
+	import Select from '#lib/components/Select.svelte';
+	import StatePage from '#lib/components/StatePage.svelte';
+	import TextField from '#lib/components/TextField.svelte';
+	import { t } from '#lib/i18n/index.svelte.js';
+	import { shell } from '#lib/shell.svelte.js';
 
 	let items = $state<ItemView[]>([]);
 	let kinds = $state<KindView[]>([]);
