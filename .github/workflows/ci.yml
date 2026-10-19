@@ -126,7 +126,7 @@ jobs:
               echo "$crate: no mutants in this diff"
             fi
           done
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: mutants
@@ -151,7 +151,7 @@ jobs:
       - name: Smoke tests
         working-directory: apps/desktop
         run: npm run test:e2e
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: playwright-traces
