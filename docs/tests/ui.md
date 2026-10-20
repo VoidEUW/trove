@@ -17,7 +17,9 @@ browser tests are in `apps/desktop/e2e/`.
 ## How to write them
 
 - Components never call `invoke`; tests mock `$lib/api` (screens) or `@tauri-apps/api/core` (the API
-  layer), and the CI guard still requires that only `src/lib/api/` imports `@tauri-apps/api`.
+  layer), and the CI guard still requires that only `src/lib/api/` imports `@tauri-apps/api`. The
+  guard reads the app's own code, so it skips test files: a test that mocks the Tauri module to
+  watch what a wrapper sends is not a component talking to Tauri.
 - Text comes from `en.json` (`en['items.add']`), not from copies in the test.
 - A `beforeEach` that returns a mock calls it afterwards as cleanup: wrap the body in braces.
 - The smoke tests set the theme through `data-theme` on `<html>` and turn on reduced motion, so an
