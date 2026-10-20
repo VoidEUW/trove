@@ -2,10 +2,16 @@
 // there is no Tauri, so this answers the commands the way the shell does and emits `items_changed`.
 // Items live in sessionStorage, so they survive a reload within one test. `window.__mock.calls` lists the
 // commands called, and `window.__mock.failNext` makes the next call reject with the given AppError.
+// `src/test/standin.contract.test.ts` keeps this in step with the real commands: the set of commands
+// answered, the shape of each answer and the error codes. Change one here and that test fails.
 (() => {
 	let counter = 0;
 	const callbacks = {};
 	const listeners = {};
+	// The shell reads this from the store's device id (ADR 9); nothing in a browser test depends on it.
+	const DEVICE_ID = '0199c3a0-0000-7000-8000-000000000000';
+	// Kept in step with package.json by the contract test, so a release cannot leave it behind.
+	const VERSION = '0.1.0';
 	const seedKeys = [
 		'electrical', 'furniture', 'artwork', 'documents', 'memories', 'valuables',
 		'software_key', 'parts_and_manuals', 'tools', 'other', 'box'
@@ -44,6 +50,7 @@
 				return args.handler;
 			}
 			if (command === 'plugin:event|unlisten') return;
+			if (command === 'app_info') return { version: VERSION, device_id: DEVICE_ID };
 			if (command === 'list_kinds') return kinds;
 			if (command === 'list_items') return items;
 			if (command === 'add_item') {

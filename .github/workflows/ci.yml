@@ -74,9 +74,11 @@ jobs:
           fi
 
       # Components go through apps/desktop/src/lib/api/ and never talk to Tauri themselves (ADR 4).
+      # Test files are skipped: a test mocks @tauri-apps/api/core to watch what a wrapper sends,
+      # which is what src/lib/api/invoke.test.ts does too. The rule is about the app's own code.
       - name: Only the API layer imports Tauri
         run: |
-          offenders=$(grep -rlE "@tauri-apps/api" apps/desktop/src --include='*.svelte' --include='*.ts' | grep -v '^apps/desktop/src/lib/api/' || true)
+          offenders=$(grep -rlE "@tauri-apps/api" apps/desktop/src --include='*.svelte' --include='*.ts' --exclude='*.test.ts' | grep -v '^apps/desktop/src/lib/api/' || true)
           if [ -n "$offenders" ]; then
             echo "Only apps/desktop/src/lib/api/ may import @tauri-apps/api:"
             echo "$offenders"

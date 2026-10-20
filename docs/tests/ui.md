@@ -11,12 +11,15 @@ browser tests are in `apps/desktop/e2e/`.
 | Component tests (Testing Library) | `src/lib/components/*.test.ts`, one file per component | Roles, `aria-*`, keyboard, pointer and click behaviour, snippets. `src/test/SidebarHarness.svelte` renders a sidebar with entries, because an entry reads its sidebar's state from context |
 | Screen tests | `src/routes/items/page.test.ts` | The Items screen with the API mocked: list, empty and error states, refetch on `items_changed`, the add form |
 | Accessibility, jsdom | `src/test/a11y.test.ts`, `src/test/axe.ts` | `axe-core` over each component and screen. No layout, so colour contrast is off here |
+| Stand-in contract | `src/test/standin.contract.test.ts` | `e2e/tauri-mock.js` against the real commands: the commands it answers against the ones `src/lib/api/` wraps, the shape of each answer against the generated bindings, the error codes it rejects with, and the version it reports |
 | Browser smoke | `e2e/items.spec.ts` | The built app in Chromium against `e2e/tauri-mock.js` (a stand-in for the Rust side): open, add, validate, sort, and `axe` including contrast in both themes |
 
 ## How to write them
 
 - Components never call `invoke`; tests mock `$lib/api` (screens) or `@tauri-apps/api/core` (the API
-  layer), and the CI guard still requires that only `src/lib/api/` imports `@tauri-apps/api`.
+  layer), and the CI guard still requires that only `src/lib/api/` imports `@tauri-apps/api`. The
+  guard reads the app's own code, so it skips test files: a test that mocks the Tauri module to
+  watch what a wrapper sends is not a component talking to Tauri.
 - Text comes from `en.json` (`en['items.add']`), not from copies in the test.
 - A `beforeEach` that returns a mock calls it afterwards as cleanup: wrap the body in braces.
 - The smoke tests set the theme through `data-theme` on `<html>` and turn on reduced motion, so an
